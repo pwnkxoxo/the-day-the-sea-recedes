@@ -1,0 +1,144 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://scripts/test/player_test.gd" id="1_test_script"]
+[ext_resource type="PackedScene" path="res://scenes/player/player.tscn" id="2_player"]
+[ext_resource type="PackedScene" path="res://scenes/interaction/test_interactable.tscn" id="3_interactable"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_horiz"]
+size = Vector2(672, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vert"]
+size = Vector2(16, 392)
+
+[node name="PlayerTest" type="Node2D"]
+script = ExtResource("1_test_script")
+
+[node name="Floor" type="ColorRect" parent="."]
+offset_right = 640.0
+offset_bottom = 360.0
+color = Color(0.086, 0.122, 0.157, 1)
+
+[node name="VisualMarkers" type="Node2D" parent="."]
+
+[node name="CenterPlaza" type="ColorRect" parent="VisualMarkers"]
+offset_left = 288.0
+offset_top = 148.0
+offset_right = 352.0
+offset_bottom = 212.0
+color = Color(0.157, 0.227, 0.298, 1)
+
+[node name="MarkerNW" type="ColorRect" parent="VisualMarkers"]
+offset_left = 136.0
+offset_top = 66.0
+offset_right = 184.0
+offset_bottom = 114.0
+color = Color(0.118, 0.22, 0.188, 1)
+
+[node name="MarkerNE" type="ColorRect" parent="VisualMarkers"]
+offset_left = 456.0
+offset_top = 66.0
+offset_right = 504.0
+offset_bottom = 114.0
+color = Color(0.227, 0.188, 0.125, 1)
+
+[node name="MarkerSW" type="ColorRect" parent="VisualMarkers"]
+offset_left = 136.0
+offset_top = 246.0
+offset_right = 184.0
+offset_bottom = 294.0
+color = Color(0.188, 0.125, 0.208, 1)
+
+[node name="MarkerSE" type="ColorRect" parent="VisualMarkers"]
+offset_left = 456.0
+offset_top = 246.0
+offset_right = 504.0
+offset_bottom = 294.0
+color = Color(0.125, 0.204, 0.227, 1)
+
+[node name="Tile1" type="ColorRect" parent="VisualMarkers"]
+offset_left = 64.0
+offset_top = 164.0
+offset_right = 96.0
+offset_bottom = 196.0
+color = Color(0.137, 0.188, 0.243, 1)
+
+[node name="Tile2" type="ColorRect" parent="VisualMarkers"]
+offset_left = 544.0
+offset_top = 164.0
+offset_right = 576.0
+offset_bottom = 196.0
+color = Color(0.137, 0.188, 0.243, 1)
+
+[node name="Tile3" type="ColorRect" parent="VisualMarkers"]
+offset_left = 304.0
+offset_top = 48.0
+offset_right = 336.0
+offset_bottom = 80.0
+color = Color(0.137, 0.188, 0.243, 1)
+
+[node name="Tile4" type="ColorRect" parent="VisualMarkers"]
+offset_left = 304.0
+offset_top = 280.0
+offset_right = 336.0
+offset_bottom = 312.0
+color = Color(0.137, 0.188, 0.243, 1)
+
+[node name="Boundaries" type="Node2D" parent="."]
+
+[node name="TopWall" type="StaticBody2D" parent="Boundaries"]
+position = Vector2(320, -8)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Boundaries/TopWall"]
+shape = SubResource("RectangleShape2D_horiz")
+
+[node name="ColorRect" type="ColorRect" parent="Boundaries/TopWall"]
+offset_left = -336.0
+offset_top = -8.0
+offset_right = 336.0
+offset_bottom = 8.0
+color = Color(0.208, 0.29, 0.373, 1)
+
+[node name="BottomWall" type="StaticBody2D" parent="Boundaries"]
+position = Vector2(320, 368)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Boundaries/BottomWall"]
+shape = SubResource("RectangleShape2D_horiz")
+
+[node name="ColorRect" type="ColorRect" parent="Boundaries/BottomWall"]
+offset_left = -336.0
+offset_top = -8.0
+offset_right = 336.0
+offset_bottom = 8.0
+color = Color(0.208, 0.29, 0.373, 1)
+
+[node name="LeftWall" type="StaticBody2D" parent="Boundaries"]
+position = Vector2(-8, 180)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Boundaries/LeftWall"]
+shape = SubResource("RectangleShape2D_vert")
+
+[node name="ColorRect" type="ColorRect" parent="Boundaries/LeftWall"]
+offset_left = -8.0
+offset_top = -196.0
+offset_right = 8.0
+offset_bottom = 196.0
+color = Color(0.208, 0.29, 0.373, 1)
+
+[node name="RightWall" type="StaticBody2D" parent="Boundaries"]
+position = Vector2(648, 180)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Boundaries/RightWall"]
+shape = SubResource("RectangleShape2D_vert")
+
+[node name="ColorRect" type="ColorRect" parent="Boundaries/RightWall"]
+offset_left = -8.0
+offset_top = -196.0
+offset_right = 8.0
+offset_bottom = 196.0
+color = Color(0.208, 0.29, 0.373, 1)
+
+[node name="Player" parent="." instance=ExtResource("2_player")]
+position = Vector2(320, 180)
+
+[node name="TestInteractable" parent="." instance=ExtResource("3_interactable")]
+position = Vector2(380, 180)

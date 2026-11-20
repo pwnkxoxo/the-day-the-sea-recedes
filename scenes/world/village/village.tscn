@@ -1,0 +1,860 @@
+[gd_scene load_steps=35 format=3]
+
+[ext_resource type="Script" path="res://scripts/world/village/village.gd" id="1_village_script"]
+[ext_resource type="Script" path="res://scripts/world/village/notice_board.gd" id="2_notice_board_script"]
+[ext_resource type="Script" path="res://scripts/world/scene_transition_trigger.gd" id="3_transition_script"]
+[ext_resource type="Script" path="res://scripts/world/village/coastal_birds_sign.gd" id="4_birds_script"]
+[ext_resource type="Script" path="res://scripts/world/story/major_truth_discovery.gd" id="5_truth_discovery_script"]
+[ext_resource type="Script" path="res://scripts/world/village/town_warning.gd" id="6_town_warning_script"]
+[ext_resource type="Script" path="res://scripts/world/village/high_ground_zone.gd" id="7_high_ground_script"]
+[ext_resource type="Script" path="res://scripts/world/story/approaching_wave.gd" id="8_approaching_wave_script"]
+[ext_resource type="Script" path="res://scripts/world/village/survivor_interactable.gd" id="9_survivor_script"]
+[ext_resource type="Script" path="res://scripts/world/story/final_overlook.gd" id="10_final_overlook_script"]
+[ext_resource type="Texture2D" path="res://art/buildings/town_hall.png" id="11_town_hall_texture"]
+[ext_resource type="Texture2D" path="res://art/buildings/sens_house.png" id="12_sens_house_texture"]
+[ext_resource type="Texture2D" path="res://art/props/conch.png" id="13_conch_texture"]
+[ext_resource type="Texture2D" path="res://art/npcs/elder_cael.png" id="14_elder_cael_texture"]
+[ext_resource type="Texture2D" path="res://art/npcs/villager.png" id="15_villager_texture"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_survivor"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_final_overlook"]
+radius = 24.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_high_ground"]
+size = Vector2(80, 50)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_warning"]
+radius = 24.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_overlook"]
+radius = 24.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_town_hall"]
+size = Vector2(112, 72)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sens_house"]
+size = Vector2(72, 56)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_house01"]
+size = Vector2(64, 52)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_house02"]
+size = Vector2(60, 48)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fisherman"]
+size = Vector2(64, 50)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_storage"]
+size = Vector2(72, 48)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_horiz_boundary"]
+size = Vector2(1000, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vert_boundary"]
+size = Vector2(16, 580)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cliff_west"]
+size = Vector2(460, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cliff_east"]
+size = Vector2(460, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ladder_guard"]
+size = Vector2(48, 12)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_access_barrier"]
+size = Vector2(40, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_transition"]
+size = Vector2(32, 16)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_notice_board"]
+radius = 16.0
+
+[node name="Village" type="Node2D"]
+script = ExtResource("1_village_script")
+
+[node name="PlayerSpawn" type="Marker2D" parent="."]
+position = Vector2(240, 200)
+
+[node name="LadderSpawn" type="Marker2D" parent="."]
+position = Vector2(480, 360)
+
+[node name="Ground" type="Node2D" parent="."]
+
+[node name="GrassBase" type="ColorRect" parent="Ground"]
+offset_right = 960.0
+offset_bottom = 400.0
+color = Color(0.22, 0.35, 0.22, 1)
+
+[node name="Paths" type="Node2D" parent="Ground"]
+
+[node name="CentralPlaza" type="ColorRect" parent="Ground/Paths"]
+offset_left = 420.0
+offset_top = 160.0
+offset_right = 540.0
+offset_bottom = 260.0
+color = Color(0.48, 0.42, 0.32, 1)
+
+[node name="PathNorthSouth" type="ColorRect" parent="Ground/Paths"]
+offset_left = 464.0
+offset_top = 126.0
+offset_right = 496.0
+offset_bottom = 376.0
+color = Color(0.48, 0.42, 0.32, 1)
+
+[node name="PathEastWest" type="ColorRect" parent="Ground/Paths"]
+offset_left = 140.0
+offset_top = 192.0
+offset_right = 820.0
+offset_bottom = 224.0
+color = Color(0.48, 0.42, 0.32, 1)
+
+[node name="PathSensHouse" type="ColorRect" parent="Ground/Paths"]
+offset_left = 164.0
+offset_top = 138.0
+offset_right = 196.0
+offset_bottom = 200.0
+color = Color(0.48, 0.42, 0.32, 1)
+
+[node name="PathFisherman" type="ColorRect" parent="Ground/Paths"]
+offset_left = 284.0
+offset_top = 216.0
+offset_right = 316.0
+offset_bottom = 295.0
+color = Color(0.48, 0.42, 0.32, 1)
+
+[node name="PathStorage" type="ColorRect" parent="Ground/Paths"]
+offset_left = 664.0
+offset_top = 216.0
+offset_right = 696.0
+offset_bottom = 295.0
+color = Color(0.48, 0.42, 0.32, 1)
+
+[node name="PathHighGroundAscent" type="ColorRect" parent="Ground/Paths"]
+offset_left = 820.0
+offset_top = 70.0
+offset_right = 852.0
+offset_bottom = 224.0
+color = Color(0.48, 0.42, 0.32, 1)
+
+[node name="HighGroundPlateau" type="ColorRect" parent="Ground/Paths"]
+offset_left = 810.0
+offset_top = 30.0
+offset_right = 930.0
+offset_bottom = 80.0
+color = Color(0.42, 0.38, 0.3, 1)
+
+[node name="HighGroundLedgeRim" type="ColorRect" parent="Ground/Paths"]
+offset_left = 805.0
+offset_top = 26.0
+offset_right = 935.0
+offset_bottom = 32.0
+color = Color(0.55, 0.5, 0.4, 1)
+
+[node name="Shore" type="Node2D" parent="."]
+
+[node name="ExposedSeabed" type="Node2D" parent="Shore"]
+
+[node name="SeabedFloor" type="ColorRect" parent="Shore/ExposedSeabed"]
+offset_top = 405.0
+offset_right = 960.0
+offset_bottom = 540.0
+color = Color(0.2, 0.26, 0.24, 1)
+
+[node name="SeabedSandBank" type="ColorRect" parent="Shore/ExposedSeabed"]
+offset_left = 380.0
+offset_top = 415.0
+offset_right = 580.0
+offset_bottom = 540.0
+color = Color(0.52, 0.46, 0.35, 1)
+
+[node name="RockCluster1" type="ColorRect" parent="Shore/ExposedSeabed"]
+offset_left = 180.0
+offset_top = 440.0
+offset_right = 260.0
+offset_bottom = 490.0
+color = Color(0.28, 0.32, 0.3, 1)
+
+[node name="RockCluster2" type="ColorRect" parent="Shore/ExposedSeabed"]
+offset_left = 720.0
+offset_top = 435.0
+offset_right = 810.0
+offset_bottom = 485.0
+color = Color(0.28, 0.32, 0.3, 1)
+
+[node name="OceanWater" type="Node2D" parent="Shore"]
+
+[node name="WaterDeep" type="ColorRect" parent="Shore/OceanWater"]
+offset_top = 460.0
+offset_right = 960.0
+offset_bottom = 540.0
+color = Color(0.08, 0.18, 0.28, 1)
+
+[node name="WaterShallow" type="ColorRect" parent="Shore/OceanWater"]
+offset_top = 405.0
+offset_right = 960.0
+offset_bottom = 460.0
+color = Color(0.14, 0.28, 0.4, 1)
+
+[node name="WaterFoam" type="ColorRect" parent="Shore/OceanWater"]
+offset_top = 401.0
+offset_right = 960.0
+offset_bottom = 405.0
+color = Color(0.65, 0.8, 0.85, 0.8)
+
+[node name="WaterLadderSurge" type="ColorRect" parent="Shore/OceanWater"]
+offset_left = 460.0
+offset_top = 400.0
+offset_right = 500.0
+offset_bottom = 435.0
+color = Color(0.12, 0.26, 0.38, 0.95)
+
+[node name="Cliff" type="Node2D" parent="Shore"]
+
+[node name="BeachSand" type="ColorRect" parent="Shore/Cliff"]
+offset_top = 405.0
+offset_right = 960.0
+offset_bottom = 415.0
+color = Color(0.68, 0.62, 0.46, 1)
+
+[node name="CliffWall" type="ColorRect" parent="Shore/Cliff"]
+offset_top = 390.0
+offset_right = 960.0
+offset_bottom = 405.0
+color = Color(0.24, 0.2, 0.18, 1)
+
+[node name="CliffRim" type="ColorRect" parent="Shore/Cliff"]
+offset_top = 376.0
+offset_right = 960.0
+offset_bottom = 390.0
+color = Color(0.35, 0.3, 0.25, 1)
+
+[node name="SeabedAccess" type="Node2D" parent="."]
+
+[node name="OverlookDeck" type="ColorRect" parent="SeabedAccess"]
+offset_left = 460.0
+offset_top = 368.0
+offset_right = 500.0
+offset_bottom = 392.0
+color = Color(0.5, 0.38, 0.25, 1)
+
+[node name="LadderFrame" type="ColorRect" parent="SeabedAccess"]
+offset_left = 472.0
+offset_top = 384.0
+offset_right = 488.0
+offset_bottom = 426.0
+color = Color(0.38, 0.26, 0.16, 1)
+
+[node name="LadderRung1" type="ColorRect" parent="SeabedAccess/LadderFrame"]
+offset_left = 2.0
+offset_top = 6.0
+offset_right = 14.0
+offset_bottom = 8.0
+color = Color(0.65, 0.5, 0.32, 1)
+
+[node name="LadderRung2" type="ColorRect" parent="SeabedAccess/LadderFrame"]
+offset_left = 2.0
+offset_top = 16.0
+offset_right = 14.0
+offset_bottom = 18.0
+color = Color(0.65, 0.5, 0.32, 1)
+
+[node name="LadderRung3" type="ColorRect" parent="SeabedAccess/LadderFrame"]
+offset_left = 2.0
+offset_top = 26.0
+offset_right = 14.0
+offset_bottom = 28.0
+color = Color(0.65, 0.5, 0.32, 1)
+
+[node name="LadderRung4" type="ColorRect" parent="SeabedAccess/LadderFrame"]
+offset_left = 2.0
+offset_top = 36.0
+offset_right = 14.0
+offset_bottom = 38.0
+color = Color(0.65, 0.5, 0.32, 1)
+
+[node name="LowerAccessLedge" type="ColorRect" parent="SeabedAccess"]
+offset_left = 456.0
+offset_top = 422.0
+offset_right = 504.0
+offset_bottom = 434.0
+color = Color(0.54, 0.42, 0.28, 1)
+
+[node name="SeabedTransition" type="Area2D" parent="SeabedAccess"]
+position = Vector2(480, 420)
+script = ExtResource("3_transition_script")
+target_scene_path = "res://scenes/test/seabed_test.tscn"
+target_spawn_id_to_set = "seabed_entry"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SeabedAccess/SeabedTransition"]
+shape = SubResource("RectangleShape2D_transition")
+
+[node name="Buildings" type="Node2D" parent="."]
+
+[node name="TownHall" type="StaticBody2D" parent="Buildings"]
+position = Vector2(480, 90)
+
+[node name="Body" type="ColorRect" parent="Buildings/TownHall"]
+offset_left = -56.0
+offset_top = -36.0
+offset_right = 56.0
+offset_bottom = 36.0
+color = Color(0.52, 0.44, 0.36, 1)
+
+[node name="Roof" type="ColorRect" parent="Buildings/TownHall"]
+offset_left = -50.0
+offset_top = -32.0
+offset_right = 50.0
+offset_bottom = -12.0
+color = Color(0.28, 0.38, 0.46, 1)
+
+[node name="Door" type="ColorRect" parent="Buildings/TownHall"]
+offset_left = -10.0
+offset_top = 16.0
+offset_right = 10.0
+offset_bottom = 36.0
+color = Color(0.25, 0.18, 0.12, 1)
+
+[node name="BuildingSprite" type="Sprite2D" parent="Buildings/TownHall"]
+position = Vector2(0, -6)
+texture = ExtResource("11_town_hall_texture")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Buildings/TownHall"]
+shape = SubResource("RectangleShape2D_town_hall")
+
+[node name="SensHouse" type="StaticBody2D" parent="Buildings"]
+position = Vector2(180, 110)
+
+[node name="Body" type="ColorRect" parent="Buildings/SensHouse"]
+offset_left = -36.0
+offset_top = -28.0
+offset_right = 36.0
+offset_bottom = 28.0
+color = Color(0.46, 0.4, 0.34, 1)
+
+[node name="Roof" type="ColorRect" parent="Buildings/SensHouse"]
+offset_left = -32.0
+offset_top = -24.0
+offset_right = 32.0
+offset_bottom = -8.0
+color = Color(0.36, 0.28, 0.22, 1)
+
+[node name="Door" type="ColorRect" parent="Buildings/SensHouse"]
+offset_left = -8.0
+offset_top = 12.0
+offset_right = 8.0
+offset_bottom = 28.0
+color = Color(0.25, 0.18, 0.12, 1)
+
+[node name="BuildingSprite" type="Sprite2D" parent="Buildings/SensHouse"]
+position = Vector2(0, -4)
+texture = ExtResource("12_sens_house_texture")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Buildings/SensHouse"]
+shape = SubResource("RectangleShape2D_sens_house")
+
+[node name="House01" type="StaticBody2D" parent="Buildings"]
+position = Vector2(780, 110)
+
+[node name="Body" type="ColorRect" parent="Buildings/House01"]
+offset_left = -32.0
+offset_top = -26.0
+offset_right = 32.0
+offset_bottom = 26.0
+color = Color(0.44, 0.38, 0.32, 1)
+
+[node name="Roof" type="ColorRect" parent="Buildings/House01"]
+offset_left = -28.0
+offset_top = -22.0
+offset_right = 28.0
+offset_bottom = -6.0
+color = Color(0.34, 0.26, 0.2, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Buildings/House01"]
+shape = SubResource("RectangleShape2D_house01")
+
+[node name="House02" type="StaticBody2D" parent="Buildings"]
+position = Vector2(150, 270)
+
+[node name="Body" type="ColorRect" parent="Buildings/House02"]
+offset_left = -30.0
+offset_top = -24.0
+offset_right = 30.0
+offset_bottom = 24.0
+color = Color(0.42, 0.38, 0.32, 1)
+
+[node name="Roof" type="ColorRect" parent="Buildings/House02"]
+offset_left = -26.0
+offset_top = -20.0
+offset_right = 26.0
+offset_bottom = -6.0
+color = Color(0.32, 0.26, 0.22, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Buildings/House02"]
+shape = SubResource("RectangleShape2D_house02")
+
+[node name="FishermansHouse" type="StaticBody2D" parent="Buildings"]
+position = Vector2(300, 310)
+
+[node name="Body" type="ColorRect" parent="Buildings/FishermansHouse"]
+offset_left = -32.0
+offset_top = -25.0
+offset_right = 32.0
+offset_bottom = 25.0
+color = Color(0.36, 0.42, 0.45, 1)
+
+[node name="Roof" type="ColorRect" parent="Buildings/FishermansHouse"]
+offset_left = -28.0
+offset_top = -21.0
+offset_right = 28.0
+offset_bottom = -7.0
+color = Color(0.26, 0.32, 0.36, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Buildings/FishermansHouse"]
+shape = SubResource("RectangleShape2D_fisherman")
+
+[node name="Storage" type="StaticBody2D" parent="Buildings"]
+position = Vector2(680, 310)
+
+[node name="Body" type="ColorRect" parent="Buildings/Storage"]
+offset_left = -36.0
+offset_top = -24.0
+offset_right = 36.0
+offset_bottom = 24.0
+color = Color(0.38, 0.34, 0.28, 1)
+
+[node name="Roof" type="ColorRect" parent="Buildings/Storage"]
+offset_left = -32.0
+offset_top = -20.0
+offset_right = 32.0
+offset_bottom = -6.0
+color = Color(0.28, 0.24, 0.18, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Buildings/Storage"]
+shape = SubResource("RectangleShape2D_storage")
+
+[node name="Boundaries" type="Node2D" parent="."]
+
+[node name="TopWall" type="StaticBody2D" parent="Boundaries"]
+position = Vector2(480, -8)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Boundaries/TopWall"]
+shape = SubResource("RectangleShape2D_horiz_boundary")
+
+[node name="LeftWall" type="StaticBody2D" parent="Boundaries"]
+position = Vector2(-8, 270)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Boundaries/LeftWall"]
+shape = SubResource("RectangleShape2D_vert_boundary")
+
+[node name="RightWall" type="StaticBody2D" parent="Boundaries"]
+position = Vector2(968, 270)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Boundaries/RightWall"]
+shape = SubResource("RectangleShape2D_vert_boundary")
+
+[node name="BottomSeaWall" type="StaticBody2D" parent="Boundaries"]
+position = Vector2(480, 548)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Boundaries/BottomSeaWall"]
+shape = SubResource("RectangleShape2D_horiz_boundary")
+
+[node name="CliffWallWest" type="StaticBody2D" parent="Boundaries"]
+position = Vector2(230, 384)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Boundaries/CliffWallWest"]
+shape = SubResource("RectangleShape2D_cliff_west")
+
+[node name="CliffWallEast" type="StaticBody2D" parent="Boundaries"]
+position = Vector2(730, 384)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Boundaries/CliffWallEast"]
+shape = SubResource("RectangleShape2D_cliff_east")
+
+[node name="LadderGuard" type="StaticBody2D" parent="Boundaries"]
+position = Vector2(480, 436)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Boundaries/LadderGuard"]
+shape = SubResource("RectangleShape2D_ladder_guard")
+
+[node name="SeabedAccessBarrier" type="StaticBody2D" parent="Boundaries"]
+position = Vector2(480, 396)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Boundaries/SeabedAccessBarrier"]
+shape = SubResource("RectangleShape2D_access_barrier")
+
+[node name="Interactables" type="Node2D" parent="."]
+
+[node name="NoticeBoard" type="Area2D" parent="Interactables"]
+position = Vector2(430, 210)
+script = ExtResource("2_notice_board_script")
+
+[node name="ColorRect" type="ColorRect" parent="Interactables/NoticeBoard"]
+offset_left = -8.0
+offset_top = -8.0
+offset_right = 8.0
+offset_bottom = 8.0
+color = Color(0.72, 0.56, 0.35, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Interactables/NoticeBoard"]
+shape = SubResource("CircleShape2D_notice_board")
+
+[node name="CliffOverlook" type="Area2D" parent="Interactables"]
+position = Vector2(480, 360)
+script = ExtResource("5_truth_discovery_script")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Interactables/CliffOverlook"]
+shape = SubResource("CircleShape2D_overlook")
+
+[node name="TownWarning" type="Area2D" parent="Interactables"]
+position = Vector2(480, 130)
+collision_layer = 2
+collision_mask = 0
+monitoring = false
+script = ExtResource("6_town_warning_script")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Interactables/TownWarning"]
+shape = SubResource("CircleShape2D_warning")
+
+[node name="ConchVisual" type="Node2D" parent="Interactables/TownWarning"]
+position = Vector2(18, -4)
+
+[node name="Pedestal" type="ColorRect" parent="Interactables/TownWarning/ConchVisual"]
+offset_left = -3.0
+offset_top = -2.0
+offset_right = 3.0
+offset_bottom = 6.0
+color = Color(0.42, 0.32, 0.22, 1)
+
+[node name="ConchShell" type="ColorRect" parent="Interactables/TownWarning/ConchVisual"]
+offset_left = -4.0
+offset_top = -7.0
+offset_right = 4.0
+offset_bottom = -2.0
+color = Color(0.92, 0.84, 0.65, 1)
+
+[node name="ConchTip" type="ColorRect" parent="Interactables/TownWarning/ConchVisual"]
+offset_left = -2.0
+offset_top = -9.0
+offset_right = 2.0
+offset_bottom = -7.0
+color = Color(0.78, 0.68, 0.48, 1)
+
+[node name="ConchSprite" type="Sprite2D" parent="Interactables/TownWarning/ConchVisual"]
+position = Vector2(0, -4)
+texture = ExtResource("13_conch_texture")
+
+[node name="AlarmBeacon" type="Node2D" parent="Interactables/TownWarning"]
+visible = false
+position = Vector2(0, -50)
+
+[node name="BeaconGlow" type="ColorRect" parent="Interactables/TownWarning/AlarmBeacon"]
+offset_left = -12.0
+offset_top = -6.0
+offset_right = 12.0
+offset_bottom = 6.0
+color = Color(1, 0.6, 0.2, 0.8)
+
+[node name="BeaconCore" type="ColorRect" parent="Interactables/TownWarning/AlarmBeacon"]
+offset_left = -6.0
+offset_top = -4.0
+offset_right = 6.0
+offset_bottom = 4.0
+color = Color(1, 0.9, 0.4, 1)
+
+[node name="PromptLabel" type="Label" parent="Interactables/TownWarning"]
+offset_left = -50.0
+offset_top = 8.0
+offset_right = 50.0
+offset_bottom = 18.0
+theme_override_colors/font_color = Color(0.95, 0.85, 0.6, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.8)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 6
+text = "Town Hall [E]"
+horizontal_alignment = 1
+
+[node name="CoastalBirds" type="Node2D" parent="."]
+script = ExtResource("4_birds_script")
+
+[node name="Bird1" type="Node2D" parent="CoastalBirds"]
+position = Vector2(450, 375)
+
+[node name="Body" type="ColorRect" parent="CoastalBirds/Bird1"]
+offset_left = -3.0
+offset_top = -2.0
+offset_right = 3.0
+offset_bottom = 2.0
+color = Color(0.92, 0.94, 0.96, 1)
+
+[node name="Wing" type="ColorRect" parent="CoastalBirds/Bird1"]
+offset_left = -2.0
+offset_top = -3.0
+offset_right = 2.0
+offset_bottom = -1.0
+color = Color(0.65, 0.7, 0.75, 1)
+
+[node name="Bird2" type="Node2D" parent="CoastalBirds"]
+position = Vector2(510, 376)
+
+[node name="Body" type="ColorRect" parent="CoastalBirds/Bird2"]
+offset_left = -3.0
+offset_top = -2.0
+offset_right = 3.0
+offset_bottom = 2.0
+color = Color(0.92, 0.94, 0.96, 1)
+
+[node name="Wing" type="ColorRect" parent="CoastalBirds/Bird2"]
+offset_left = -2.0
+offset_top = -3.0
+offset_right = 2.0
+offset_bottom = -1.0
+color = Color(0.65, 0.7, 0.75, 1)
+
+[node name="Bird3" type="Node2D" parent="CoastalBirds"]
+position = Vector2(480, 365)
+
+[node name="Body" type="ColorRect" parent="CoastalBirds/Bird3"]
+offset_left = -3.0
+offset_top = -2.0
+offset_right = 3.0
+offset_bottom = 2.0
+color = Color(0.92, 0.94, 0.96, 1)
+
+[node name="Wing" type="ColorRect" parent="CoastalBirds/Bird3"]
+offset_left = -2.0
+offset_top = -3.0
+offset_right = 2.0
+offset_bottom = -1.0
+color = Color(0.65, 0.7, 0.75, 1)
+
+[node name="EvacuationProps" type="Node2D" parent="."]
+visible = false
+
+[node name="OverturnedCrate" type="ColorRect" parent="EvacuationProps"]
+offset_left = 440.0
+offset_top = 230.0
+offset_right = 452.0
+offset_bottom = 242.0
+color = Color(0.38, 0.28, 0.18, 1)
+
+[node name="DroppedBasket" type="ColorRect" parent="EvacuationProps"]
+offset_left = 450.0
+offset_top = 236.0
+offset_right = 458.0
+offset_bottom = 244.0
+color = Color(0.5, 0.4, 0.28, 1)
+
+[node name="DroppedSupplies" type="ColorRect" parent="EvacuationProps"]
+offset_left = 520.0
+offset_top = 210.0
+offset_right = 532.0
+offset_bottom = 220.0
+color = Color(0.34, 0.3, 0.24, 1)
+
+[node name="AscentMarker" type="ColorRect" parent="EvacuationProps"]
+offset_left = 812.0
+offset_top = 200.0
+offset_right = 818.0
+offset_bottom = 216.0
+color = Color(0.6, 0.5, 0.35, 1)
+
+[node name="AscentBanner" type="ColorRect" parent="EvacuationProps"]
+offset_left = 818.0
+offset_top = 200.0
+offset_right = 826.0
+offset_bottom = 208.0
+color = Color(0.85, 0.4, 0.2, 1)
+
+[node name="HighGroundZone" type="Area2D" parent="."]
+position = Vector2(870, 55)
+collision_layer = 2
+collision_mask = 3
+script = ExtResource("7_high_ground_script")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HighGroundZone"]
+shape = SubResource("RectangleShape2D_high_ground")
+
+[node name="VisualMarker" type="Node2D" parent="HighGroundZone"]
+
+[node name="Pedestal" type="ColorRect" parent="HighGroundZone/VisualMarker"]
+offset_left = -8.0
+offset_top = -8.0
+offset_right = 8.0
+offset_bottom = 8.0
+color = Color(0.45, 0.42, 0.38, 1)
+
+[node name="Post" type="ColorRect" parent="HighGroundZone/VisualMarker"]
+offset_left = -2.0
+offset_top = -22.0
+offset_right = 2.0
+offset_bottom = -8.0
+color = Color(0.6, 0.48, 0.3, 1)
+
+[node name="Banner" type="ColorRect" parent="HighGroundZone/VisualMarker"]
+offset_left = 2.0
+offset_top = -22.0
+offset_right = 14.0
+offset_bottom = -14.0
+color = Color(0.85, 0.75, 0.3, 1)
+
+[node name="PromptLabel" type="Label" parent="HighGroundZone"]
+offset_left = -40.0
+offset_top = 10.0
+offset_right = 40.0
+offset_bottom = 20.0
+theme_override_colors/font_color = Color(0.95, 0.85, 0.6, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.8)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 6
+text = "High Ground Lookout"
+horizontal_alignment = 1
+
+[node name="ApproachingWave" type="Node2D" parent="."]
+script = ExtResource("8_approaching_wave_script")
+
+[node name="WaveContainer" type="Node2D" parent="ApproachingWave"]
+visible = false
+position = Vector2(0, 540)
+
+[node name="SurgeWall" type="ColorRect" parent="ApproachingWave/WaveContainer"]
+offset_right = 960.0
+offset_bottom = 200.0
+color = Color(0.08, 0.22, 0.38, 0.95)
+
+[node name="WaveFoam" type="ColorRect" parent="ApproachingWave/WaveContainer"]
+offset_top = -12.0
+offset_right = 960.0
+offset_bottom = 6.0
+color = Color(0.85, 0.95, 1.0, 0.9)
+
+[node name="WaveSpray" type="ColorRect" parent="ApproachingWave/WaveContainer"]
+offset_top = -20.0
+offset_right = 960.0
+offset_bottom = -10.0
+color = Color(0.65, 0.82, 0.92, 0.7)
+
+[node name="FloodedOverlay" type="ColorRect" parent="ApproachingWave"]
+visible = false
+offset_top = 160.0
+offset_right = 960.0
+offset_bottom = 540.0
+color = Color(0.1, 0.22, 0.34, 0.85)
+
+[node name="FlashOverlay" type="ColorRect" parent="ApproachingWave"]
+visible = false
+modulate = Color(1, 1, 1, 0)
+offset_right = 960.0
+offset_bottom = 540.0
+color = Color(0.92, 0.96, 1, 1)
+
+[node name="Survivors" type="Node2D" parent="."]
+visible = false
+
+[node name="ElderCael" type="Area2D" parent="Survivors"]
+position = Vector2(840, 60)
+collision_layer = 2
+collision_mask = 3
+script = ExtResource("9_survivor_script")
+survivor_name = "Elder Cael"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Survivors/ElderCael"]
+shape = SubResource("CircleShape2D_survivor")
+
+[node name="Visual" type="ColorRect" parent="Survivors/ElderCael"]
+offset_left = -6.0
+offset_top = -12.0
+offset_right = 6.0
+offset_bottom = 4.0
+color = Color(0.2, 0.35, 0.65, 1)
+
+[node name="RobeTrim" type="ColorRect" parent="Survivors/ElderCael/Visual"]
+offset_top = 12.0
+offset_right = 12.0
+offset_bottom = 16.0
+color = Color(0.85, 0.75, 0.35, 1)
+
+[node name="ElderSprite" type="Sprite2D" parent="Survivors/ElderCael"]
+position = Vector2(0, -4)
+texture = ExtResource("14_elder_cael_texture")
+
+[node name="PromptLabel" type="Label" parent="Survivors/ElderCael"]
+offset_left = -30.0
+offset_top = 6.0
+offset_right = 30.0
+offset_bottom = 16.0
+theme_override_font_sizes/font_size = 5
+text = "Elder Cael [E]"
+horizontal_alignment = 1
+
+[node name="Villager" type="Area2D" parent="Survivors"]
+position = Vector2(885, 75)
+collision_layer = 2
+collision_mask = 3
+script = ExtResource("9_survivor_script")
+survivor_name = "Villager"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Survivors/Villager"]
+shape = SubResource("CircleShape2D_survivor")
+
+[node name="Visual" type="ColorRect" parent="Survivors/Villager"]
+offset_left = -5.0
+offset_top = -10.0
+offset_right = 5.0
+offset_bottom = 4.0
+color = Color(0.45, 0.32, 0.22, 1)
+
+[node name="VillagerSprite" type="Sprite2D" parent="Survivors/Villager"]
+position = Vector2(0, -4)
+texture = ExtResource("15_villager_texture")
+
+[node name="PromptLabel" type="Label" parent="Survivors/Villager"]
+offset_left = -25.0
+offset_top = 6.0
+offset_right = 25.0
+offset_bottom = 16.0
+theme_override_font_sizes/font_size = 5
+text = "Villager [E]"
+horizontal_alignment = 1
+
+[node name="FinalOverlook" type="Area2D" parent="."]
+visible = false
+position = Vector2(915, 45)
+collision_layer = 2
+collision_mask = 3
+script = ExtResource("10_final_overlook_script")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FinalOverlook"]
+shape = SubResource("CircleShape2D_final_overlook")
+
+[node name="Visual" type="Node2D" parent="FinalOverlook"]
+
+[node name="Post" type="ColorRect" parent="FinalOverlook/Visual"]
+offset_left = -3.0
+offset_top = -10.0
+offset_right = 3.0
+offset_bottom = 6.0
+color = Color(0.6, 0.5, 0.35, 1)
+
+[node name="Rail" type="ColorRect" parent="FinalOverlook/Visual"]
+offset_left = -10.0
+offset_top = -12.0
+offset_right = 10.0
+offset_bottom = -8.0
+color = Color(0.7, 0.6, 0.45, 1)
+
+[node name="PromptLabel" type="Label" parent="FinalOverlook"]
+offset_left = -45.0
+offset_top = 8.0
+offset_right = 45.0
+offset_bottom = 18.0
+theme_override_font_sizes/font_size = 5
+text = "Look Out Over the Sea [E]"
+horizontal_alignment = 1
+
+

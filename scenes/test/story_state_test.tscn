@@ -1,0 +1,275 @@
+[gd_scene load_steps=12 format=3]
+
+[ext_resource type="Script" path="res://scripts/test/story_state_test.gd" id="1_test_script"]
+[ext_resource type="PackedScene" path="res://scenes/player/player.tscn" id="2_player_scene"]
+[ext_resource type="Script" path="res://scripts/interaction/interactable.gd" id="3_interactable_script"]
+[ext_resource type="PackedScene" path="res://scenes/ui/atmospheric_message_ui.tscn" id="4_message_ui_scene"]
+[ext_resource type="PackedScene" path="res://scenes/ui/dialogue_ui.tscn" id="5_dialogue_ui_scene"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_top"]
+size = Vector2(480, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bottom"]
+size = Vector2(480, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_left"]
+size = Vector2(16, 270)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_right"]
+size = Vector2(16, 270)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_marker"]
+radius = 16.0
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_marker"]
+size = Vector2(12, 12)
+
+[node name="StoryStateTest" type="Node2D"]
+script = ExtResource("1_test_script")
+
+[node name="Ground" type="ColorRect" parent="."]
+offset_right = 480.0
+offset_bottom = 270.0
+color = Color(0.14, 0.18, 0.22, 1)
+
+[node name="Boundaries" type="StaticBody2D" parent="."]
+
+[node name="TopWall" type="CollisionShape2D" parent="Boundaries"]
+position = Vector2(240, -8)
+shape = SubResource("RectangleShape2D_top")
+
+[node name="BottomWall" type="CollisionShape2D" parent="Boundaries"]
+position = Vector2(240, 278)
+shape = SubResource("RectangleShape2D_bottom")
+
+[node name="LeftWall" type="CollisionShape2D" parent="Boundaries"]
+position = Vector2(-8, 135)
+shape = SubResource("RectangleShape2D_left")
+
+[node name="RightWall" type="CollisionShape2D" parent="Boundaries"]
+position = Vector2(488, 135)
+shape = SubResource("RectangleShape2D_right")
+
+[node name="Interactables" type="Node2D" parent="."]
+
+[node name="ShellMarker" type="Area2D" parent="Interactables"]
+position = Vector2(80, 80)
+collision_layer = 2
+collision_mask = 0
+monitoring = false
+script = ExtResource("3_interactable_script")
+prompt_message = "Shell Sign"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Interactables/ShellMarker"]
+shape = SubResource("CircleShape2D_marker")
+
+[node name="Sprite2D" type="Sprite2D" parent="Interactables/ShellMarker"]
+modulate = Color(0.95, 0.75, 0.35, 1)
+texture = SubResource("PlaceholderTexture2D_marker")
+
+[node name="Label" type="Label" parent="Interactables/ShellMarker"]
+offset_left = -30.0
+offset_top = -18.0
+offset_right = 30.0
+offset_bottom = -8.0
+theme_override_font_sizes/font_size = 6
+text = "Shell [E]"
+horizontal_alignment = 1
+
+[node name="PoolMarker" type="Area2D" parent="Interactables"]
+position = Vector2(180, 80)
+collision_layer = 2
+collision_mask = 0
+monitoring = false
+script = ExtResource("3_interactable_script")
+prompt_message = "Tide Pools Sign"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Interactables/PoolMarker"]
+shape = SubResource("CircleShape2D_marker")
+
+[node name="Sprite2D" type="Sprite2D" parent="Interactables/PoolMarker"]
+modulate = Color(0.3, 0.7, 0.85, 1)
+texture = SubResource("PlaceholderTexture2D_marker")
+
+[node name="Label" type="Label" parent="Interactables/PoolMarker"]
+offset_left = -30.0
+offset_top = -18.0
+offset_right = 30.0
+offset_bottom = -8.0
+theme_override_font_sizes/font_size = 6
+text = "Pools [E]"
+horizontal_alignment = 1
+
+[node name="BirdsMarker" type="Area2D" parent="Interactables"]
+position = Vector2(280, 80)
+collision_layer = 2
+collision_mask = 0
+monitoring = false
+script = ExtResource("3_interactable_script")
+prompt_message = "Birds Sign"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Interactables/BirdsMarker"]
+shape = SubResource("CircleShape2D_marker")
+
+[node name="Sprite2D" type="Sprite2D" parent="Interactables/BirdsMarker"]
+modulate = Color(0.85, 0.85, 0.9, 1)
+texture = SubResource("PlaceholderTexture2D_marker")
+
+[node name="Label" type="Label" parent="Interactables/BirdsMarker"]
+offset_left = -30.0
+offset_top = -18.0
+offset_right = 30.0
+offset_bottom = -8.0
+theme_override_font_sizes/font_size = 6
+text = "Birds [E]"
+horizontal_alignment = 1
+
+[node name="TremorMarker" type="Area2D" parent="Interactables"]
+position = Vector2(380, 80)
+collision_layer = 2
+collision_mask = 0
+monitoring = false
+script = ExtResource("3_interactable_script")
+prompt_message = "Tremor Sign"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Interactables/TremorMarker"]
+shape = SubResource("CircleShape2D_marker")
+
+[node name="Sprite2D" type="Sprite2D" parent="Interactables/TremorMarker"]
+modulate = Color(0.85, 0.45, 0.35, 1)
+texture = SubResource("PlaceholderTexture2D_marker")
+
+[node name="Label" type="Label" parent="Interactables/TremorMarker"]
+offset_left = -30.0
+offset_top = -18.0
+offset_right = 30.0
+offset_bottom = -8.0
+theme_override_font_sizes/font_size = 6
+text = "Tremor [E]"
+horizontal_alignment = 1
+
+[node name="WindMarker" type="Area2D" parent="Interactables"]
+position = Vector2(120, 190)
+collision_layer = 2
+collision_mask = 0
+monitoring = false
+script = ExtResource("3_interactable_script")
+prompt_message = "Wind Sign"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Interactables/WindMarker"]
+shape = SubResource("CircleShape2D_marker")
+
+[node name="Sprite2D" type="Sprite2D" parent="Interactables/WindMarker"]
+modulate = Color(0.65, 0.85, 0.75, 1)
+texture = SubResource("PlaceholderTexture2D_marker")
+
+[node name="Label" type="Label" parent="Interactables/WindMarker"]
+offset_left = -30.0
+offset_top = -18.0
+offset_right = 30.0
+offset_bottom = -8.0
+theme_override_font_sizes/font_size = 6
+text = "Wind [E]"
+horizontal_alignment = 1
+
+[node name="ShipwreckMarker" type="Area2D" parent="Interactables"]
+position = Vector2(240, 190)
+collision_layer = 2
+collision_mask = 0
+monitoring = false
+script = ExtResource("3_interactable_script")
+prompt_message = "Shipwreck Clue"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Interactables/ShipwreckMarker"]
+shape = SubResource("CircleShape2D_marker")
+
+[node name="Sprite2D" type="Sprite2D" parent="Interactables/ShipwreckMarker"]
+modulate = Color(0.5, 0.35, 0.25, 1)
+texture = SubResource("PlaceholderTexture2D_marker")
+
+[node name="Label" type="Label" parent="Interactables/ShipwreckMarker"]
+offset_left = -40.0
+offset_top = -18.0
+offset_right = 40.0
+offset_bottom = -8.0
+theme_override_font_sizes/font_size = 6
+text = "Shipwreck Log [E]"
+horizontal_alignment = 1
+
+[node name="TruthMarker" type="Area2D" parent="Interactables"]
+position = Vector2(360, 190)
+collision_layer = 2
+collision_mask = 0
+monitoring = false
+script = ExtResource("3_interactable_script")
+prompt_message = "Discover Major Truth"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Interactables/TruthMarker"]
+shape = SubResource("CircleShape2D_marker")
+
+[node name="Sprite2D" type="Sprite2D" parent="Interactables/TruthMarker"]
+modulate = Color(0.9, 0.2, 0.3, 1)
+texture = SubResource("PlaceholderTexture2D_marker")
+
+[node name="Label" type="Label" parent="Interactables/TruthMarker"]
+offset_left = -40.0
+offset_top = -18.0
+offset_right = 40.0
+offset_bottom = -8.0
+theme_override_font_sizes/font_size = 6
+text = "Major Truth [E]"
+horizontal_alignment = 1
+
+[node name="Player" parent="." instance=ExtResource("2_player_scene")]
+position = Vector2(240, 135)
+
+[node name="AtmosphericMessageUI" parent="." instance=ExtResource("4_message_ui_scene")]
+
+[node name="DialogueUI" parent="." instance=ExtResource("5_dialogue_ui_scene")]
+
+[node name="DebugHUD" type="CanvasLayer" parent="."]
+layer = 5
+
+[node name="Panel" type="PanelContainer" parent="DebugHUD"]
+offset_left = 6.0
+offset_top = 4.0
+offset_right = 314.0
+offset_bottom = 54.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="DebugHUD/Panel"]
+layout_mode = 2
+theme_override_constants/separation = 1
+
+[node name="ProgressLabel" type="Label" parent="DebugHUD/Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.9, 0.5, 1)
+theme_override_font_sizes/font_size = 7
+text = "Story Progress: 0% | Strange Signs: 0/3"
+
+[node name="InvestigationLabel" type="Label" parent="DebugHUD/Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 0.8, 0.8, 1)
+theme_override_font_sizes/font_size = 7
+text = "Investigation Phase: INACTIVE (Need 3 signs)"
+
+[node name="TruthLabel" type="Label" parent="DebugHUD/Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.85, 1, 1)
+theme_override_font_sizes/font_size = 7
+text = "Can Reveal Truth: NO | Major Truth Uncovered: NO"
+
+[node name="FlagsLabel" type="Label" parent="DebugHUD/Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.65, 0.75, 0.8, 0.9)
+theme_override_font_sizes/font_size = 6
+text = "Active Flags: (None)"
+autowrap_mode = 2
+
+[node name="HintLabel" type="Label" parent="DebugHUD"]
+offset_left = 6.0
+offset_top = 166.0
+offset_right = 314.0
+offset_bottom = 176.0
+theme_override_colors/font_color = Color(0.6, 0.7, 0.75, 0.8)
+theme_override_font_sizes/font_size = 6
+text = "WASD: Move | E: Examine | R: Reset StoryState | T: Toggle Ocean"

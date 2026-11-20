@@ -1,0 +1,316 @@
+[gd_scene load_steps=13 format=3]
+
+[ext_resource type="Script" path="res://scripts/test/evacuation_escape_test.gd" id="1_test_script"]
+[ext_resource type="PackedScene" path="res://scenes/player/player.tscn" id="2_player_scene"]
+[ext_resource type="Script" path="res://scripts/world/village/town_warning.gd" id="3_warning_script"]
+[ext_resource type="PackedScene" path="res://scenes/ui/atmospheric_message_ui.tscn" id="4_message_ui_scene"]
+[ext_resource type="PackedScene" path="res://scenes/ui/dialogue_ui.tscn" id="5_dialogue_ui_scene"]
+[ext_resource type="Script" path="res://scripts/world/village/high_ground_zone.gd" id="6_high_ground_script"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_top"]
+size = Vector2(480, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bottom"]
+size = Vector2(480, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_left"]
+size = Vector2(16, 270)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_right"]
+size = Vector2(16, 270)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_town_hall"]
+size = Vector2(96, 60)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_warning"]
+radius = 24.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_high_ground"]
+size = Vector2(60, 60)
+
+[node name="EvacuationEscapeTest" type="Node2D"]
+script = ExtResource("1_test_script")
+
+[node name="Environment" type="Node2D" parent="."]
+
+[node name="GrassBase" type="ColorRect" parent="Environment"]
+offset_right = 480.0
+offset_bottom = 270.0
+color = Color(0.22, 0.35, 0.22, 1)
+
+[node name="LowerVillagePath" type="ColorRect" parent="Environment"]
+offset_left = 60.0
+offset_top = 150.0
+offset_right = 260.0
+offset_bottom = 180.0
+color = Color(0.48, 0.42, 0.32, 1)
+
+[node name="Plaza" type="ColorRect" parent="Environment"]
+offset_left = 110.0
+offset_top = 90.0
+offset_right = 210.0
+offset_bottom = 170.0
+color = Color(0.48, 0.42, 0.32, 1)
+
+[node name="EvacuationTrail" type="ColorRect" parent="Environment"]
+offset_left = 180.0
+offset_top = 50.0
+offset_right = 400.0
+offset_bottom = 80.0
+color = Color(0.48, 0.42, 0.32, 1)
+
+[node name="HighGroundPlateau" type="ColorRect" parent="Environment"]
+offset_left = 370.0
+offset_top = 20.0
+offset_right = 460.0
+offset_bottom = 100.0
+color = Color(0.42, 0.38, 0.3, 1)
+
+[node name="HighGroundLedgeRim" type="ColorRect" parent="Environment"]
+offset_left = 366.0
+offset_top = 16.0
+offset_right = 464.0
+offset_bottom = 22.0
+color = Color(0.55, 0.5, 0.4, 1)
+
+[node name="Boundaries" type="StaticBody2D" parent="."]
+
+[node name="TopWall" type="CollisionShape2D" parent="Boundaries"]
+position = Vector2(240, -8)
+shape = SubResource("RectangleShape2D_top")
+
+[node name="BottomWall" type="CollisionShape2D" parent="Boundaries"]
+position = Vector2(240, 278)
+shape = SubResource("RectangleShape2D_bottom")
+
+[node name="LeftWall" type="CollisionShape2D" parent="Boundaries"]
+position = Vector2(-8, 135)
+shape = SubResource("RectangleShape2D_left")
+
+[node name="RightWall" type="CollisionShape2D" parent="Boundaries"]
+position = Vector2(488, 135)
+shape = SubResource("RectangleShape2D_right")
+
+[node name="Buildings" type="Node2D" parent="."]
+
+[node name="TownHall" type="StaticBody2D" parent="Buildings"]
+position = Vector2(160, 65)
+
+[node name="Body" type="ColorRect" parent="Buildings/TownHall"]
+offset_left = -48.0
+offset_top = -30.0
+offset_right = 48.0
+offset_bottom = 30.0
+color = Color(0.52, 0.44, 0.36, 1)
+
+[node name="Roof" type="ColorRect" parent="Buildings/TownHall"]
+offset_left = -42.0
+offset_top = -26.0
+offset_right = 42.0
+offset_bottom = -10.0
+color = Color(0.28, 0.38, 0.46, 1)
+
+[node name="Door" type="ColorRect" parent="Buildings/TownHall"]
+offset_left = -8.0
+offset_top = 10.0
+offset_right = 8.0
+offset_bottom = 30.0
+color = Color(0.25, 0.18, 0.12, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Buildings/TownHall"]
+shape = SubResource("RectangleShape2D_town_hall")
+
+[node name="AlarmBeacon" type="Node2D" parent="Buildings/TownHall"]
+visible = false
+position = Vector2(0, -42)
+
+[node name="BeaconGlow" type="ColorRect" parent="Buildings/TownHall/AlarmBeacon"]
+offset_left = -12.0
+offset_top = -6.0
+offset_right = 12.0
+offset_bottom = 6.0
+color = Color(1, 0.6, 0.2, 0.8)
+
+[node name="BeaconCore" type="ColorRect" parent="Buildings/TownHall/AlarmBeacon"]
+offset_left = -6.0
+offset_top = -4.0
+offset_right = 6.0
+offset_bottom = 4.0
+color = Color(1, 0.9, 0.4, 1)
+
+[node name="Interactables" type="Node2D" parent="."]
+
+[node name="TownWarning" type="Area2D" parent="Interactables"]
+position = Vector2(160, 100)
+collision_layer = 2
+collision_mask = 0
+monitoring = false
+script = ExtResource("3_warning_script")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Interactables/TownWarning"]
+shape = SubResource("CircleShape2D_warning")
+
+[node name="ConchVisual" type="Node2D" parent="Interactables/TownWarning"]
+position = Vector2(16, -4)
+
+[node name="Pedestal" type="ColorRect" parent="Interactables/TownWarning/ConchVisual"]
+offset_left = -3.0
+offset_top = -2.0
+offset_right = 3.0
+offset_bottom = 6.0
+color = Color(0.42, 0.32, 0.22, 1)
+
+[node name="ConchShell" type="ColorRect" parent="Interactables/TownWarning/ConchVisual"]
+offset_left = -4.0
+offset_top = -7.0
+offset_right = 4.0
+offset_bottom = -2.0
+color = Color(0.92, 0.84, 0.65, 1)
+
+[node name="PromptLabel" type="Label" parent="Interactables/TownWarning"]
+offset_left = -40.0
+offset_top = 8.0
+offset_right = 40.0
+offset_bottom = 18.0
+theme_override_colors/font_color = Color(0.95, 0.85, 0.6, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.8)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 6
+text = "Town Hall [E]"
+horizontal_alignment = 1
+
+[node name="EvacuationProps" type="Node2D" parent="."]
+visible = false
+
+[node name="OverturnedCrate" type="ColorRect" parent="EvacuationProps"]
+offset_left = 130.0
+offset_top = 150.0
+offset_right = 142.0
+offset_bottom = 162.0
+color = Color(0.38, 0.28, 0.18, 1)
+
+[node name="DroppedBasket" type="ColorRect" parent="EvacuationProps"]
+offset_left = 140.0
+offset_top = 156.0
+offset_right = 148.0
+offset_bottom = 164.0
+color = Color(0.5, 0.4, 0.28, 1)
+
+[node name="TrailMarker1" type="ColorRect" parent="EvacuationProps"]
+offset_left = 240.0
+offset_top = 44.0
+offset_right = 246.0
+offset_bottom = 56.0
+color = Color(0.6, 0.5, 0.35, 1)
+
+[node name="TrailBanner1" type="ColorRect" parent="EvacuationProps"]
+offset_left = 246.0
+offset_top = 44.0
+offset_right = 254.0
+offset_bottom = 50.0
+color = Color(0.85, 0.4, 0.2, 1)
+
+[node name="HighGroundZone" type="Area2D" parent="."]
+position = Vector2(415, 60)
+collision_layer = 2
+collision_mask = 3
+script = ExtResource("6_high_ground_script")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HighGroundZone"]
+shape = SubResource("RectangleShape2D_high_ground")
+
+[node name="VisualMarker" type="Node2D" parent="HighGroundZone"]
+
+[node name="Pedestal" type="ColorRect" parent="HighGroundZone/VisualMarker"]
+offset_left = -8.0
+offset_top = -8.0
+offset_right = 8.0
+offset_bottom = 8.0
+color = Color(0.45, 0.42, 0.38, 1)
+
+[node name="Post" type="ColorRect" parent="HighGroundZone/VisualMarker"]
+offset_left = -2.0
+offset_top = -22.0
+offset_right = 2.0
+offset_bottom = -8.0
+color = Color(0.6, 0.48, 0.3, 1)
+
+[node name="Banner" type="ColorRect" parent="HighGroundZone/VisualMarker"]
+offset_left = 2.0
+offset_top = -22.0
+offset_right = 14.0
+offset_bottom = -14.0
+color = Color(0.85, 0.75, 0.3, 1)
+
+[node name="PromptLabel" type="Label" parent="HighGroundZone"]
+offset_left = -40.0
+offset_top = 10.0
+offset_right = 40.0
+offset_bottom = 20.0
+theme_override_colors/font_color = Color(0.95, 0.85, 0.6, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.8)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 6
+text = "High Ground Lookout"
+horizontal_alignment = 1
+
+[node name="Player" parent="." instance=ExtResource("2_player_scene")]
+position = Vector2(160, 150)
+
+[node name="AtmosphericMessageUI" parent="." instance=ExtResource("4_message_ui_scene")]
+
+[node name="DialogueUI" parent="." instance=ExtResource("5_dialogue_ui_scene")]
+
+[node name="DebugHUD" type="CanvasLayer" parent="."]
+layer = 5
+
+[node name="Panel" type="PanelContainer" parent="DebugHUD"]
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 316.0
+offset_bottom = 68.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="DebugHUD/Panel"]
+layout_mode = 2
+theme_override_constants/separation = 1
+
+[node name="TownWarnedLabel" type="Label" parent="DebugHUD/Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.4, 1)
+theme_override_font_sizes/font_size = 6
+text = "town_warned: FALSE [T to toggle]"
+
+[node name="EvacuationStartedLabel" type="Label" parent="DebugHUD/Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 0.8, 0.8, 1)
+theme_override_font_sizes/font_size = 6
+text = "evacuation_started: FALSE"
+
+[node name="HighGroundReachedLabel" type="Label" parent="DebugHUD/Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 0.8, 0.8, 1)
+theme_override_font_sizes/font_size = 6
+text = "evacuation_reached_high_ground: FALSE"
+
+[node name="HighGroundStatusLabel" type="Label" parent="DebugHUD/Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 0.8, 0.8, 1)
+theme_override_font_sizes/font_size = 6
+text = "High-Ground Status: GATED"
+
+[node name="ProgressLabel" type="Label" parent="DebugHUD/Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 0.9, 0.7, 1)
+theme_override_font_sizes/font_size = 6
+text = "Story Progress: 0%"
+
+[node name="ControlsLabel" type="Label" parent="DebugHUD"]
+offset_left = 4.0
+offset_top = 168.0
+offset_right = 316.0
+offset_bottom = 178.0
+theme_override_colors/font_color = Color(0.6, 0.7, 0.75, 0.8)
+theme_override_font_sizes/font_size = 5
+text = "[WASD] Move | [E/Space] Interact | [T] Toggle town_warned | [R] Reset State"

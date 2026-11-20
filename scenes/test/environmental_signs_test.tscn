@@ -1,0 +1,58 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://scripts/test/environmental_signs_test.gd" id="1_test_script"]
+[ext_resource type="PackedScene" path="res://scenes/world/village/village.tscn" id="2_village"]
+[ext_resource type="PackedScene" path="res://scenes/player/player.tscn" id="3_player"]
+[ext_resource type="PackedScene" path="res://scenes/ui/atmospheric_message_ui.tscn" id="4_message_ui"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_debug_bg"]
+bg_color = Color(0.08, 0.08, 0.1, 0.8)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[node name="EnvironmentalSignsTest" type="Node2D"]
+script = ExtResource("1_test_script")
+
+[node name="Village" parent="." instance=ExtResource("2_village")]
+
+[node name="Player" parent="." instance=ExtResource("3_player")]
+position = Vector2(240, 200)
+
+[node name="DebugHUD" type="CanvasLayer" parent="."]
+
+[node name="Panel" type="PanelContainer" parent="DebugHUD"]
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 230.0
+offset_bottom = 46.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_debug_bg")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="DebugHUD/Panel"]
+layout_mode = 2
+theme_override_constants/separation = 1
+
+[node name="StateLabel" type="Label" parent="DebugHUD/Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 8
+text = "Ocean State: NORMAL"
+
+[node name="SignsLabel" type="Label" parent="DebugHUD/Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 8
+text = "Strange Signs: INACTIVE"
+
+[node name="LastSignLabel" type="Label" parent="DebugHUD/Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.85, 0.85, 0.75, 1)
+theme_override_font_sizes/font_size = 7
+text = "Examined: None"
+
+[node name="InstructionLabel" type="Label" parent="DebugHUD/Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.65, 0.65, 0.65, 1)
+theme_override_font_sizes/font_size = 7
+text = "[T] Trigger Retreat  [WASD] Move  [E] Examine"
+
+[node name="AtmosphericMessageUI" parent="." instance=ExtResource("4_message_ui")]

@@ -1,0 +1,211 @@
+[gd_scene load_steps=10 format=3]
+
+[ext_resource type="Script" path="res://scripts/test/approaching_wave_test.gd" id="1_test_script"]
+[ext_resource type="PackedScene" path="res://scenes/player/player.tscn" id="2_player_scene"]
+[ext_resource type="PackedScene" path="res://scenes/ui/atmospheric_message_ui.tscn" id="3_message_ui_scene"]
+[ext_resource type="PackedScene" path="res://scenes/ui/dialogue_ui.tscn" id="4_dialogue_ui_scene"]
+[ext_resource type="Script" path="res://scripts/world/story/approaching_wave.gd" id="5_wave_script"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_top"]
+size = Vector2(480, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bottom"]
+size = Vector2(480, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_left"]
+size = Vector2(16, 270)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_right"]
+size = Vector2(16, 270)
+
+[node name="ApproachingWaveTest" type="Node2D"]
+script = ExtResource("1_test_script")
+
+[node name="Environment" type="Node2D" parent="."]
+
+[node name="GrassBase" type="ColorRect" parent="Environment"]
+offset_right = 480.0
+offset_bottom = 270.0
+color = Color(0.22, 0.35, 0.22, 1)
+
+[node name="LowerVillage" type="ColorRect" parent="Environment"]
+offset_left = 20.0
+offset_top = 130.0
+offset_right = 310.0
+offset_bottom = 210.0
+color = Color(0.38, 0.34, 0.28, 1)
+
+[node name="ShoreAndSeabed" type="ColorRect" parent="Environment"]
+offset_top = 210.0
+offset_right = 480.0
+offset_bottom = 250.0
+color = Color(0.2, 0.26, 0.24, 1)
+
+[node name="OceanHorizon" type="ColorRect" parent="Environment"]
+offset_top = 250.0
+offset_right = 480.0
+offset_bottom = 270.0
+color = Color(0.08, 0.18, 0.28, 1)
+
+[node name="HighGroundPlateau" type="ColorRect" parent="Environment"]
+offset_left = 330.0
+offset_top = 20.0
+offset_right = 460.0
+offset_bottom = 110.0
+color = Color(0.42, 0.38, 0.3, 1)
+
+[node name="HighGroundLedgeRim" type="ColorRect" parent="Environment"]
+offset_left = 326.0
+offset_top = 16.0
+offset_right = 464.0
+offset_bottom = 22.0
+color = Color(0.55, 0.5, 0.4, 1)
+
+[node name="Boundaries" type="StaticBody2D" parent="."]
+
+[node name="TopWall" type="CollisionShape2D" parent="Boundaries"]
+position = Vector2(240, -8)
+shape = SubResource("RectangleShape2D_top")
+
+[node name="BottomWall" type="CollisionShape2D" parent="Boundaries"]
+position = Vector2(240, 278)
+shape = SubResource("RectangleShape2D_bottom")
+
+[node name="LeftWall" type="CollisionShape2D" parent="Boundaries"]
+position = Vector2(-8, 135)
+shape = SubResource("RectangleShape2D_left")
+
+[node name="RightWall" type="CollisionShape2D" parent="Boundaries"]
+position = Vector2(488, 135)
+shape = SubResource("RectangleShape2D_right")
+
+[node name="Buildings" type="Node2D" parent="."]
+
+[node name="VillageHouse1" type="ColorRect" parent="Buildings"]
+offset_left = 60.0
+offset_top = 150.0
+offset_right = 96.0
+offset_bottom = 180.0
+color = Color(0.45, 0.38, 0.32, 1)
+
+[node name="VillageHouse2" type="ColorRect" parent="Buildings"]
+offset_left = 130.0
+offset_top = 145.0
+offset_right = 175.0
+offset_bottom = 185.0
+color = Color(0.42, 0.36, 0.3, 1)
+
+[node name="TownHallSilhouette" type="ColorRect" parent="Buildings"]
+offset_left = 210.0
+offset_top = 138.0
+offset_right = 265.0
+offset_bottom = 185.0
+color = Color(0.5, 0.42, 0.34, 1)
+
+[node name="ApproachingWave" type="Node2D" parent="."]
+script = ExtResource("5_wave_script")
+
+[node name="WaveContainer" type="Node2D" parent="ApproachingWave"]
+visible = false
+position = Vector2(0, 380)
+
+[node name="SurgeWall" type="ColorRect" parent="ApproachingWave/WaveContainer"]
+offset_right = 480.0
+offset_bottom = 120.0
+color = Color(0.08, 0.22, 0.38, 0.95)
+
+[node name="WaveFoam" type="ColorRect" parent="ApproachingWave/WaveContainer"]
+offset_top = -8.0
+offset_right = 480.0
+offset_bottom = 4.0
+color = Color(0.85, 0.95, 1.0, 0.9)
+
+[node name="WaveSpray" type="ColorRect" parent="ApproachingWave/WaveContainer"]
+offset_top = -14.0
+offset_right = 480.0
+offset_bottom = -6.0
+color = Color(0.65, 0.82, 0.92, 0.7)
+
+[node name="FloodedOverlay" type="ColorRect" parent="ApproachingWave"]
+visible = false
+offset_top = 130.0
+offset_right = 480.0
+offset_bottom = 270.0
+color = Color(0.1, 0.22, 0.34, 0.85)
+
+[node name="FlashOverlay" type="ColorRect" parent="ApproachingWave"]
+visible = false
+modulate = Color(1, 1, 1, 0)
+offset_right = 480.0
+offset_bottom = 270.0
+color = Color(0.92, 0.96, 1, 1)
+
+[node name="Player" parent="." instance=ExtResource("2_player_scene")]
+position = Vector2(395, 65)
+
+[node name="AtmosphericMessageUI" parent="." instance=ExtResource("3_message_ui_scene")]
+
+[node name="DialogueUI" parent="." instance=ExtResource("4_dialogue_ui_scene")]
+
+[node name="DebugHUD" type="CanvasLayer" parent="."]
+layer = 5
+
+[node name="Panel" type="PanelContainer" parent="DebugHUD"]
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 320.0
+offset_bottom = 88.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="DebugHUD/Panel"]
+layout_mode = 2
+theme_override_constants/separation = 1
+
+[node name="TownWarnedLabel" type="Label" parent="DebugHUD/Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 5
+text = "town_warned: FALSE"
+
+[node name="EvacStartedLabel" type="Label" parent="DebugHUD/Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 5
+text = "evacuation_started: FALSE"
+
+[node name="HighGroundLabel" type="Label" parent="DebugHUD/Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 5
+text = "evacuation_reached_high_ground: FALSE [T to toggle]"
+
+[node name="WaveStartedLabel" type="Label" parent="DebugHUD/Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 5
+text = "wave_event_started: FALSE"
+
+[node name="WaveArrivedLabel" type="Label" parent="DebugHUD/Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 5
+text = "wave_arrived: FALSE"
+
+[node name="SurvivedLabel" type="Label" parent="DebugHUD/Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 5
+text = "survived_wave: FALSE"
+
+[node name="WaveStateLabel" type="Label" parent="DebugHUD/Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 5
+text = "Wave State: IDLE (Press W to trigger)"
+
+[node name="ProgressLabel" type="Label" parent="DebugHUD/Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 0.9, 0.7, 1)
+theme_override_font_sizes/font_size = 5
+text = "Story Progress: 0%"
+
+[node name="ControlsLabel" type="Label" parent="DebugHUD"]
+offset_left = 4.0
+offset_top = 168.0
+offset_right = 316.0
+offset_bottom = 178.0
+theme_override_colors/font_color = Color(0.6, 0.7, 0.75, 0.8)
+theme_override_font_sizes/font_size = 5
+text = "[WASD] Move | [T] Toggle High Ground | [W] Trigger Wave | [R] Reset State"

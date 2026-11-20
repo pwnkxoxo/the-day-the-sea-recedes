@@ -1,0 +1,10 @@
+# Godot 4+ specific ignores
+.godot/
+/android/
+builds/
+*.translation
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+*.tmp

@@ -1,0 +1,281 @@
+[gd_scene load_steps=12 format=3]
+
+[ext_resource type="Script" path="res://scripts/test/aftermath_ending_test.gd" id="1_test_script"]
+[ext_resource type="PackedScene" path="res://scenes/player/player.tscn" id="2_player_scene"]
+[ext_resource type="PackedScene" path="res://scenes/ui/atmospheric_message_ui.tscn" id="3_message_ui_scene"]
+[ext_resource type="PackedScene" path="res://scenes/ui/dialogue_ui.tscn" id="4_dialogue_ui_scene"]
+[ext_resource type="PackedScene" path="res://scenes/ui/ending_ui.tscn" id="5_ending_ui_scene"]
+[ext_resource type="Script" path="res://scripts/world/village/survivor_interactable.gd" id="6_survivor_script"]
+[ext_resource type="Script" path="res://scripts/world/story/final_overlook.gd" id="7_overlook_script"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_top"]
+size = Vector2(480, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bottom"]
+size = Vector2(480, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_left"]
+size = Vector2(16, 270)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_right"]
+size = Vector2(16, 270)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_survivor"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_overlook"]
+radius = 24.0
+
+[node name="AftermathEndingTest" type="Node2D"]
+script = ExtResource("1_test_script")
+
+[node name="Environment" type="Node2D" parent="."]
+
+[node name="GrassBase" type="ColorRect" parent="Environment"]
+offset_right = 480.0
+offset_bottom = 270.0
+color = Color(0.22, 0.35, 0.22, 1)
+
+[node name="LowerVillage" type="ColorRect" parent="Environment"]
+offset_left = 20.0
+offset_top = 130.0
+offset_right = 270.0
+offset_bottom = 210.0
+color = Color(0.38, 0.34, 0.28, 1)
+
+[node name="ReturnedOcean" type="ColorRect" parent="."]
+offset_top = 210.0
+offset_right = 480.0
+offset_bottom = 270.0
+color = Color(0.08, 0.2, 0.32, 1)
+
+[node name="FloodedVillage" type="ColorRect" parent="."]
+offset_left = 20.0
+offset_top = 130.0
+offset_right = 270.0
+offset_bottom = 210.0
+color = Color(0.12, 0.25, 0.35, 0.8)
+
+[node name="HighGroundPlateau" type="ColorRect" parent="."]
+offset_left = 280.0
+offset_top = 20.0
+offset_right = 460.0
+offset_bottom = 120.0
+color = Color(0.42, 0.38, 0.3, 1)
+
+[node name="HighGroundLedgeRim" type="ColorRect" parent="."]
+offset_left = 276.0
+offset_top = 16.0
+offset_right = 464.0
+offset_bottom = 22.0
+color = Color(0.55, 0.5, 0.4, 1)
+
+[node name="DebrisProps" type="Node2D" parent="."]
+
+[node name="Plank1" type="ColorRect" parent="DebrisProps"]
+offset_left = 120.0
+offset_top = 160.0
+offset_right = 145.0
+offset_bottom = 166.0
+color = Color(0.3, 0.22, 0.16, 1)
+
+[node name="Plank2" type="ColorRect" parent="DebrisProps"]
+offset_left = 180.0
+offset_top = 175.0
+offset_right = 200.0
+offset_bottom = 180.0
+color = Color(0.32, 0.24, 0.18, 1)
+
+[node name="Boundaries" type="StaticBody2D" parent="."]
+
+[node name="TopWall" type="CollisionShape2D" parent="Boundaries"]
+position = Vector2(240, -8)
+shape = SubResource("RectangleShape2D_top")
+
+[node name="BottomWall" type="CollisionShape2D" parent="Boundaries"]
+position = Vector2(240, 278)
+shape = SubResource("RectangleShape2D_bottom")
+
+[node name="LeftWall" type="CollisionShape2D" parent="Boundaries"]
+position = Vector2(-8, 135)
+shape = SubResource("RectangleShape2D_left")
+
+[node name="RightWall" type="CollisionShape2D" parent="Boundaries"]
+position = Vector2(488, 135)
+shape = SubResource("RectangleShape2D_right")
+
+[node name="Survivors" type="Node2D" parent="."]
+
+[node name="ElderCael" type="Area2D" parent="Survivors"]
+position = Vector2(330, 70)
+collision_layer = 2
+collision_mask = 3
+script = ExtResource("6_survivor_script")
+survivor_name = "Elder Cael"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Survivors/ElderCael"]
+shape = SubResource("CircleShape2D_survivor")
+
+[node name="Visual" type="ColorRect" parent="Survivors/ElderCael"]
+offset_left = -6.0
+offset_top = -12.0
+offset_right = 6.0
+offset_bottom = 4.0
+color = Color(0.2, 0.35, 0.65, 1)
+
+[node name="RobeTrim" type="ColorRect" parent="Survivors/ElderCael/Visual"]
+offset_top = 12.0
+offset_right = 12.0
+offset_bottom = 16.0
+color = Color(0.85, 0.75, 0.35, 1)
+
+[node name="PromptLabel" type="Label" parent="Survivors/ElderCael"]
+offset_left = -30.0
+offset_top = 6.0
+offset_right = 30.0
+offset_bottom = 16.0
+theme_override_font_sizes/font_size = 5
+text = "Elder Cael [E]"
+horizontal_alignment = 1
+
+[node name="Villager" type="Area2D" parent="Survivors"]
+position = Vector2(380, 85)
+collision_layer = 2
+collision_mask = 3
+script = ExtResource("6_survivor_script")
+survivor_name = "Villager"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Survivors/Villager"]
+shape = SubResource("CircleShape2D_survivor")
+
+[node name="Visual" type="ColorRect" parent="Survivors/Villager"]
+offset_left = -5.0
+offset_top = -10.0
+offset_right = 5.0
+offset_bottom = 4.0
+color = Color(0.45, 0.32, 0.22, 1)
+
+[node name="PromptLabel" type="Label" parent="Survivors/Villager"]
+offset_left = -25.0
+offset_top = 6.0
+offset_right = 25.0
+offset_bottom = 16.0
+theme_override_font_sizes/font_size = 5
+text = "Villager [E]"
+horizontal_alignment = 1
+
+[node name="FinalOverlook" type="Area2D" parent="."]
+position = Vector2(430, 45)
+collision_layer = 2
+collision_mask = 3
+script = ExtResource("7_overlook_script")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FinalOverlook"]
+shape = SubResource("CircleShape2D_overlook")
+
+[node name="Visual" type="Node2D" parent="FinalOverlook"]
+
+[node name="Post" type="ColorRect" parent="FinalOverlook/Visual"]
+offset_left = -3.0
+offset_top = -10.0
+offset_right = 3.0
+offset_bottom = 6.0
+color = Color(0.6, 0.5, 0.35, 1)
+
+[node name="Rail" type="ColorRect" parent="FinalOverlook/Visual"]
+offset_left = -10.0
+offset_top = -12.0
+offset_right = 10.0
+offset_bottom = -8.0
+color = Color(0.7, 0.6, 0.45, 1)
+
+[node name="PromptLabel" type="Label" parent="FinalOverlook"]
+offset_left = -45.0
+offset_top = 8.0
+offset_right = 45.0
+offset_bottom = 18.0
+theme_override_font_sizes/font_size = 5
+text = "Look Out Over the Sea [E]"
+horizontal_alignment = 1
+
+[node name="Player" parent="." instance=ExtResource("2_player_scene")]
+position = Vector2(300, 50)
+
+[node name="AtmosphericMessageUI" parent="." instance=ExtResource("3_message_ui_scene")]
+
+[node name="DialogueUI" parent="." instance=ExtResource("4_dialogue_ui_scene")]
+
+[node name="EndingUI" parent="." instance=ExtResource("5_ending_ui_scene")]
+
+[node name="DebugHUD" type="CanvasLayer" parent="."]
+layer = 5
+
+[node name="Panel" type="PanelContainer" parent="DebugHUD"]
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 320.0
+offset_bottom = 98.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="DebugHUD/Panel"]
+layout_mode = 2
+theme_override_constants/separation = 1
+
+[node name="TownWarnedLabel" type="Label" parent="DebugHUD/Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 5
+text = "town_warned: FALSE"
+
+[node name="EvacStartedLabel" type="Label" parent="DebugHUD/Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 5
+text = "evacuation_started: FALSE"
+
+[node name="HighGroundLabel" type="Label" parent="DebugHUD/Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 5
+text = "evacuation_reached_high_ground: FALSE"
+
+[node name="WaveStartedLabel" type="Label" parent="DebugHUD/Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 5
+text = "wave_event_started: FALSE"
+
+[node name="WaveArrivedLabel" type="Label" parent="DebugHUD/Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 5
+text = "wave_arrived: FALSE"
+
+[node name="SurvivedLabel" type="Label" parent="DebugHUD/Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 5
+text = "survived_wave: FALSE [T to toggle]"
+
+[node name="AftermathLabel" type="Label" parent="DebugHUD/Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 5
+text = "aftermath_started: FALSE"
+
+[node name="EndingLabel" type="Label" parent="DebugHUD/Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 5
+text = "ending_completed: FALSE"
+
+[node name="EndingStateLabel" type="Label" parent="DebugHUD/Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 5
+text = "Ending State: BEFORE_SURVIVAL (Press F to trigger)"
+
+[node name="ProgressLabel" type="Label" parent="DebugHUD/Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 0.9, 0.7, 1)
+theme_override_font_sizes/font_size = 5
+text = "Story Progress: 0%"
+
+[node name="ControlsLabel" type="Label" parent="DebugHUD"]
+offset_left = 4.0
+offset_top = 168.0
+offset_right = 316.0
+offset_bottom = 178.0
+theme_override_colors/font_color = Color(0.6, 0.7, 0.75, 0.8)
+theme_override_font_sizes/font_size = 5
+text = "[WASD] Move | [E/Space] Interact | [T] Toggle Survived | [F] Overlook | [R] Reset"

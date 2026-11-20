@@ -1,0 +1,47 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/world/seabed/seabed_shell.gd" id="1_shell_script"]
+[ext_resource type="Texture2D" path="res://art/props/scallop_shell.png" id="2_shell_texture"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_shell"]
+radius = 14.0
+
+[node name="Shell" type="Area2D"]
+script = ExtResource("1_shell_script")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_shell")
+
+[node name="Visual" type="Node2D" parent="."]
+
+[node name="GlowAura" type="ColorRect" parent="Visual"]
+offset_left = -7.0
+offset_top = -7.0
+offset_right = 7.0
+offset_bottom = 7.0
+color = Color(0.55, 0.85, 0.8, 0.35)
+
+[node name="ShellBase" type="ColorRect" parent="Visual"]
+offset_left = -5.0
+offset_top = -5.0
+offset_right = 5.0
+offset_bottom = 5.0
+color = Color(0.88, 0.84, 0.74, 1)
+
+[node name="ShellRim" type="ColorRect" parent="Visual"]
+offset_left = -4.0
+offset_top = -4.0
+offset_right = 4.0
+offset_bottom = -2.0
+color = Color(0.94, 0.76, 0.54, 1)
+
+[node name="ShellSprite" type="Sprite2D" parent="Visual"]
+position = Vector2(0, 0)
+texture = ExtResource("2_shell_texture")
+
+[node name="GlowPoint" type="ColorRect" parent="Visual"]
+offset_left = -1.0
+offset_top = -1.0
+offset_right = 1.0
+offset_bottom = 1.0
+color = Color(0.4, 0.92, 0.82, 1)

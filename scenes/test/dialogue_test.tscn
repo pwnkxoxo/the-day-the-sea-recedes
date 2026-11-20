@@ -1,0 +1,98 @@
+[gd_scene load_steps=10 format=3]
+
+[ext_resource type="Script" path="res://scripts/test/dialogue_test.gd" id="1_test_script"]
+[ext_resource type="PackedScene" path="res://scenes/player/player.tscn" id="2_player_scene"]
+[ext_resource type="PackedScene" path="res://scenes/ui/dialogue_ui.tscn" id="3_dialogue_ui_scene"]
+[ext_resource type="Script" path="res://scripts/interaction/interactable.gd" id="4_interactable_script"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_top"]
+size = Vector2(480, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bottom"]
+size = Vector2(480, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_left"]
+size = Vector2(16, 270)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_right"]
+size = Vector2(16, 270)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_npc"]
+radius = 16.0
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_npc"]
+size = Vector2(14, 16)
+
+[node name="DialogueTest" type="Node2D"]
+script = ExtResource("1_test_script")
+
+[node name="Ground" type="ColorRect" parent="."]
+offset_right = 480.0
+offset_bottom = 270.0
+color = Color(0.16, 0.2, 0.24, 1)
+
+[node name="Boundaries" type="StaticBody2D" parent="."]
+
+[node name="TopWall" type="CollisionShape2D" parent="Boundaries"]
+position = Vector2(240, -8)
+shape = SubResource("RectangleShape2D_top")
+
+[node name="BottomWall" type="CollisionShape2D" parent="Boundaries"]
+position = Vector2(240, 278)
+shape = SubResource("RectangleShape2D_bottom")
+
+[node name="LeftWall" type="CollisionShape2D" parent="Boundaries"]
+position = Vector2(-8, 135)
+shape = SubResource("RectangleShape2D_left")
+
+[node name="RightWall" type="CollisionShape2D" parent="Boundaries"]
+position = Vector2(488, 135)
+shape = SubResource("RectangleShape2D_right")
+
+[node name="TestNPC" type="Area2D" parent="."]
+position = Vector2(240, 135)
+collision_layer = 2
+collision_mask = 0
+monitoring = false
+script = ExtResource("4_interactable_script")
+prompt_message = "Talk"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TestNPC"]
+shape = SubResource("CircleShape2D_npc")
+
+[node name="Sprite2D" type="Sprite2D" parent="TestNPC"]
+modulate = Color(0.95, 0.75, 0.35, 1)
+texture = SubResource("PlaceholderTexture2D_npc")
+
+[node name="NpcLabel" type="Label" parent="TestNPC"]
+offset_left = -30.0
+offset_top = -20.0
+offset_right = 30.0
+offset_bottom = -10.0
+theme_override_colors/font_color = Color(0.95, 0.85, 0.6, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.8)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 7
+text = "Test NPC [E]"
+horizontal_alignment = 1
+
+[node name="Player" parent="." instance=ExtResource("2_player_scene")]
+position = Vector2(200, 135)
+
+[node name="DialogueUI" parent="." instance=ExtResource("3_dialogue_ui_scene")]
+
+[node name="HelpOverlay" type="CanvasLayer" parent="."]
+layer = 5
+
+[node name="HelpLabel" type="Label" parent="HelpOverlay"]
+offset_left = 6.0
+offset_top = 4.0
+offset_right = 314.0
+offset_bottom = 22.0
+theme_override_colors/font_color = Color(0.8, 0.85, 0.9, 0.75)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.9)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 7
+text = "WASD / Arrows: Move | E / Space: Interact & Advance Dialogue"
