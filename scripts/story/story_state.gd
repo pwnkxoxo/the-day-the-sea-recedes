@@ -34,6 +34,12 @@ signal aftermath_started
 ## Emitted when the final story ending sequence has completed.
 signal ending_completed
 
+## Emitted when the opening story sequence has completed.
+signal opening_sequence_completed
+
+## Emitted when the sea change (ocean retreat) event is triggered.
+signal sea_change_triggered
+
 ## Threshold of environmental signs required to trigger the investigation phase.
 ## Out of 5 signs (Shell, Tide Pools, Birds, Tremor, Wind), observing 3 represents
 ## the narrative turning point from curiosity/unease into active investigation.
@@ -50,6 +56,8 @@ const ENVIRONMENTAL_SIGNS: Array[String] = [
 
 ## Baseline default state for all known story flags.
 const DEFAULT_FLAGS: Dictionary = {
+	"opening_sequence_completed": false,
+	"sea_change_triggered": false,
 	"ocean_retreat_seen": false,
 	"shell_sign_seen": false,
 	"tide_pool_sign_seen": false,
@@ -74,6 +82,8 @@ static var instance: StoryStateController = null
 
 ## Static dictionary persisting story flags across scene transitions and test runs.
 static var _persisted_flags: Dictionary = {
+	"opening_sequence_completed": false,
+	"sea_change_triggered": false,
 	"ocean_retreat_seen": false,
 	"shell_sign_seen": false,
 	"tide_pool_sign_seen": false,
@@ -149,6 +159,10 @@ func set_flag(flag_name: String, value: bool = true) -> void:
 		aftermath_started.emit()
 	elif flag_name == "ending_completed" and value:
 		ending_completed.emit()
+	elif flag_name == "opening_sequence_completed" and value:
+		opening_sequence_completed.emit()
+	elif flag_name == "sea_change_triggered" and value:
+		sea_change_triggered.emit()
 
 ## Clears (sets to false) the specified flag.
 func clear_flag(flag_name: String) -> void:
@@ -236,6 +250,14 @@ func can_complete_ending() -> bool:
 ## Returns true if the final story ending sequence has completed.
 func is_ending_completed() -> bool:
 	return has_flag("ending_completed")
+
+## Returns true if the opening story sequence has completed.
+func is_opening_sequence_completed() -> bool:
+	return has_flag("opening_sequence_completed")
+
+## Returns true if the sea-change event has been triggered.
+func is_sea_change_triggered() -> bool:
+	return has_flag("sea_change_triggered")
 
 ## Returns normalized story progress between 0.0 and 1.0.
 func get_progress() -> float:
@@ -362,6 +384,18 @@ static func can_trigger_ending() -> bool:
 
 static func is_game_ended() -> bool:
 	return _persisted_flags.get("ending_completed", false)
+
+static func is_opening_completed() -> bool:
+	return _persisted_flags.get("opening_sequence_completed", false)
+
+static func set_opening_completed(val: bool = true) -> void:
+	set_story_flag("opening_sequence_completed", val)
+
+static func is_sea_change_active() -> bool:
+	return _persisted_flags.get("sea_change_triggered", false)
+
+static func set_sea_change_triggered(val: bool = true) -> void:
+	set_story_flag("sea_change_triggered", val)
 
 static func get_story_progress() -> float:
 	if instance:

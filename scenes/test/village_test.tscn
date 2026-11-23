@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene load_steps=8 format=3]
 
 [ext_resource type="Script" path="res://scripts/test/village_test.gd" id="1_test_script"]
 [ext_resource type="PackedScene" path="res://scenes/world/village/village.tscn" id="2_village"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" path="res://scenes/ui/atmospheric_message_ui.tscn" id="4_message_ui"]
 [ext_resource type="PackedScene" path="res://scenes/ui/dialogue_ui.tscn" id="5_dialogue_ui"]
 [ext_resource type="PackedScene" path="res://scenes/ui/ending_ui.tscn" id="6_ending_ui"]
+[ext_resource type="PackedScene" path="res://scenes/world/opening_sequence.tscn" id="7_opening_sequence"]
 
 [node name="VillageTest" type="Node2D"]
 script = ExtResource("1_test_script")
@@ -20,3 +21,5 @@ position = Vector2(240, 200)
 [node name="DialogueUI" parent="." instance=ExtResource("5_dialogue_ui")]
 
 [node name="EndingUI" parent="." instance=ExtResource("6_ending_ui")]
+
+[node name="OpeningSequence" parent="." instance=ExtResource("7_opening_sequence")]

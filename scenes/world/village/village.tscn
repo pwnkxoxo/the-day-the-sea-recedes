@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=3]
+[gd_scene load_steps=37 format=3]
 
 [ext_resource type="Script" path="res://scripts/world/village/village.gd" id="1_village_script"]
 [ext_resource type="Script" path="res://scripts/world/village/notice_board.gd" id="2_notice_board_script"]
@@ -16,6 +16,7 @@
 [ext_resource type="Texture2D" path="res://art/npcs/elder_cael.png" id="14_elder_cael_texture"]
 [ext_resource type="Texture2D" path="res://art/npcs/villager.png" id="15_villager_texture"]
 [ext_resource type="PackedScene" path="res://scenes/npcs/npc_base.tscn" id="16_npc_base_scene"]
+[ext_resource type="Script" path="res://scripts/world/story/sea_change_event.gd" id="17_sea_change_script"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_survivor"]
 radius = 20.0
@@ -1003,5 +1004,8 @@ current_state = 1
 waypoints = [Vector2(400, 330), Vector2(440, 330)]
 waypoint_wait_time = 2.4
 rng_seed = 1019
+
+[node name="SeaChangeEvent" type="Node2D" parent="."]
+script = ExtResource("17_sea_change_script")
 
 

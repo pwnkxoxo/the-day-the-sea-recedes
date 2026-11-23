@@ -3,6 +3,7 @@ extends Node2D
 
 @onready var village: Village = $Village
 @onready var player: Player = $Player
+@onready var opening_sequence: OpeningSequence = get_node_or_null("OpeningSequence")
 
 func _ready() -> void:
 	if village and player:
@@ -13,3 +14,6 @@ func _ready() -> void:
 		
 		SceneTransitionTrigger.target_spawn_id = ""
 		village.setup_camera(player)
+		
+		if opening_sequence and not StoryStateController.has_story_flag("opening_sequence_completed"):
+			opening_sequence.initialize(village, player)

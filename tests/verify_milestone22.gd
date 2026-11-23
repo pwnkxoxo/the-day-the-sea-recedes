@@ -480,6 +480,7 @@ func test_14_player_collision_independence() -> void:
 	player.queue_free()
 	npc.queue_free()
 	await process_frame
+	await physics_frame
 	
 	if t14_ok:
 		report_result("Test 14: Player collision does not displace, drag, or corrupt NPC state", true)

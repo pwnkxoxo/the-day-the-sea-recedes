@@ -121,8 +121,11 @@ func _ready() -> void:
 		interaction_area.prompt_message = prompt_message
 		interaction_area.is_interactable = is_interactable
 	
-	if not waypoints.is_empty() and current_state == State.IDLE and _wait_timer <= 0.0:
-		_wait_timer = get_random_idle_duration(0.2, maxf(waypoint_wait_time, 1.0))
+	if not waypoints.is_empty():
+		if current_state == State.WALKING and waypoints.size() > 1 and global_position.distance_to(waypoints[0]) <= arrival_threshold:
+			current_waypoint_index = 1
+		elif current_state == State.IDLE and _wait_timer <= 0.0:
+			_wait_timer = get_random_idle_duration(0.2, maxf(waypoint_wait_time, 1.0))
 	
 	_update_animation_state(Vector2.ZERO)
 
@@ -252,13 +255,13 @@ func _process_waypoint_movement(delta: float) -> void:
 	var actual_dist: float = global_position.distance_to(pos_before)
 	
 	# Obstruction detection: if actual movement was negligible while colliding with an obstacle
-	var is_blocked: bool = (actual_dist < (speed * delta * 0.25)) and (get_slide_collision_count() > 0)
+	var is_blocked: bool = (actual_dist < (speed * delta * 0.5)) and (get_slide_collision_count() > 0)
 	if is_blocked:
 		_stuck_timer += delta
-		if _stuck_timer >= 0.5:
+		if _stuck_timer >= 0.35:
 			_handle_stuck_recovery(diff_x_active, diff_y_active)
 	else:
-		_stuck_timer = maxf(0.0, _stuck_timer - delta * 2.0)
+		_stuck_timer = maxf(0.0, _stuck_timer - delta)
 
 ## Recovers from a blocked route by yielding, testing alternate axis, or advancing waypoint.
 func _handle_stuck_recovery(has_x_remaining: bool, has_y_remaining: bool) -> void:

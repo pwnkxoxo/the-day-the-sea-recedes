@@ -21,6 +21,7 @@ extends Node2D
 @onready var final_overlook: FinalOverlook = get_node_or_null("FinalOverlook")
 @onready var survivors_group: Node2D = get_node_or_null("Survivors")
 @onready var npcs_group: Node2D = get_node_or_null("NPCs")
+@onready var sea_change_event: SeaChangeEvent = get_node_or_null("SeaChangeEvent")
 
 ## Returns all active NPCBase children residing in the village.
 func get_npcs() -> Array[NPCBase]:
@@ -99,6 +100,7 @@ func _on_ocean_state_changed(new_state: OceanStateController.State) -> void:
 	else:
 		if _ambient_player:
 			_ambient_player.volume_db = -12.0
+			_ambient_player.pitch_scale = 1.0
 		apply_normal_state()
 
 ## Applies the normal high-water state: ocean is present, seabed access is blocked.

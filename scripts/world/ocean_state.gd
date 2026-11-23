@@ -61,6 +61,10 @@ func get_state() -> State:
 func trigger_retreat() -> void:
 	if _persisted_state == State.OCEAN_RETREATED:
 		return
+	if StoryStateController.instance:
+		StoryStateController.instance.set_flag("sea_change_triggered", true)
+	else:
+		StoryStateController.set_story_flag("sea_change_triggered", true)
 	retreat_started.emit()
 	_persisted_state = State.OCEAN_RETREATED
 	state_changed.emit(_persisted_state)
@@ -92,7 +96,11 @@ static func trigger_ocean_retreat() -> void:
 	if instance:
 		instance.trigger_retreat()
 	else:
+		if _persisted_state == State.OCEAN_RETREATED:
+			return
+		StoryStateController.set_story_flag("sea_change_triggered", true)
 		_persisted_state = State.OCEAN_RETREATED
+		StoryStateController.set_story_flag("ocean_retreat_seen", true)
 
 static func set_ocean_state(new_state: State) -> void:
 	if instance:
