@@ -16,6 +16,12 @@ var facing_direction: Vector2 = Vector2.DOWN
 @export var texture_left: Texture2D = preload("res://art/sens/sens_left.png")
 @export var texture_right: Texture2D = preload("res://art/sens/sens_right.png")
 
+## Canonical cardinal animation states for pixel-art characters.
+const ANIM_STATES: Array[String] = [
+	"idle_up", "idle_down", "idle_left", "idle_right",
+	"walk_up", "walk_down", "walk_left", "walk_right"
+]
+
 ## Current animation / movement state string.
 ## Valid states: idle_up, idle_down, idle_left, idle_right, walk_up, walk_down, walk_left, walk_right.
 var current_animation_state: String = "idle_down"
@@ -52,8 +58,10 @@ func _ready() -> void:
 	
 	_setup_animation_player()
 	
-	if sprite and texture_down:
-		sprite.texture = texture_down
+	if sprite:
+		sprite.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+		if texture_down:
+			sprite.texture = texture_down
 	if interaction_area:
 		interaction_area.area_entered.connect(_on_interaction_area_entered)
 		interaction_area.area_exited.connect(_on_interaction_area_exited)
@@ -217,6 +225,33 @@ func get_facing_direction_name() -> String:
 ## Returns current animation state string.
 func get_animation_state() -> String:
 	return current_animation_state
+
+## Returns a copy of the canonical 8 animation state names.
+static func get_animation_states() -> Array[String]:
+	return ANIM_STATES.duplicate()
+
+## Returns true if the given animation state name is valid.
+static func has_animation_state(state_name: String) -> bool:
+	return ANIM_STATES.has(state_name)
+
+## Returns directional texture by cardinal direction name ("up", "down", "left", "right").
+func get_directional_texture(dir_name: String) -> Texture2D:
+	match dir_name:
+		"up": return texture_up
+		"down": return texture_down
+		"left": return texture_left
+		"right": return texture_right
+	return null
+
+## Sets directional texture by cardinal direction name.
+func set_directional_texture(dir_name: String, tex: Texture2D) -> void:
+	match dir_name:
+		"up": texture_up = tex
+		"down": texture_down = tex
+		"left": texture_left = tex
+		"right": texture_right = tex
+	_update_sprite_direction()
+	_setup_animation_player()
 
 ## Updates animation state and directional sprite textures.
 func _update_animation_state(dir: Vector2) -> void:
