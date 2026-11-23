@@ -20,6 +20,25 @@ extends Node2D
 @onready var approaching_wave: ApproachingWave = get_node_or_null("ApproachingWave")
 @onready var final_overlook: FinalOverlook = get_node_or_null("FinalOverlook")
 @onready var survivors_group: Node2D = get_node_or_null("Survivors")
+@onready var npcs_group: Node2D = get_node_or_null("NPCs")
+
+## Returns all active NPCBase children residing in the village.
+func get_npcs() -> Array[NPCBase]:
+	var result: Array[NPCBase] = []
+	if npcs_group:
+		for child in npcs_group.get_children():
+			if child is NPCBase:
+				result.append(child)
+	return result
+
+## Returns an NPCBase child matching the given node name or npc_name, or null.
+func get_npc_by_name(p_name: String) -> NPCBase:
+	if npcs_group:
+		for child in npcs_group.get_children():
+			if child is NPCBase:
+				if child.name == p_name or child.npc_name == p_name:
+					return child
+	return null
 
 ## Scripted dialogue initiating the evacuation when returning to warned village.
 const EVACUATION_INTRO_DIALOGUE: Array[Dictionary] = [

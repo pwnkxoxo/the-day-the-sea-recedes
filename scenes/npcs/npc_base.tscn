@@ -11,6 +11,7 @@ size = Vector2(12, 14)
 radius = 20.0
 
 [node name="NPCBase" type="CharacterBody2D"]
+motion_mode = 1
 script = ExtResource("1_npc_script")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

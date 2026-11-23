@@ -46,6 +46,7 @@ var _action_pressed_states: Dictionary = {
 @onready var animation_player: AnimationPlayer = get_node_or_null("AnimationPlayer")
 
 func _ready() -> void:
+	motion_mode = CharacterBody2D.MOTION_MODE_FLOATING
 	add_to_group("player")
 	if not sprite:
 		sprite = get_node_or_null("Sprite2D")

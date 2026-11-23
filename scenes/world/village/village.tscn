@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=3]
+[gd_scene load_steps=36 format=3]
 
 [ext_resource type="Script" path="res://scripts/world/village/village.gd" id="1_village_script"]
 [ext_resource type="Script" path="res://scripts/world/village/notice_board.gd" id="2_notice_board_script"]
@@ -15,6 +15,7 @@
 [ext_resource type="Texture2D" path="res://art/props/conch.png" id="13_conch_texture"]
 [ext_resource type="Texture2D" path="res://art/npcs/elder_cael.png" id="14_elder_cael_texture"]
 [ext_resource type="Texture2D" path="res://art/npcs/villager.png" id="15_villager_texture"]
+[ext_resource type="PackedScene" path="res://scenes/npcs/npc_base.tscn" id="16_npc_base_scene"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_survivor"]
 radius = 20.0
@@ -856,5 +857,151 @@ offset_bottom = 18.0
 theme_override_font_sizes/font_size = 5
 text = "Look Out Over the Sea [E]"
 horizontal_alignment = 1
+
+[node name="NPCs" type="Node2D" parent="."]
+
+[node name="Elder_Cael" parent="NPCs" instance=ExtResource("16_npc_base_scene")]
+position = Vector2(450, 150)
+npc_name = "Elder Cael"
+prompt_message = "Talk to Elder Cael"
+texture_down = ExtResource("14_elder_cael_texture")
+facing_direction = Vector2(0, 1)
+rng_seed = 1001
+
+[node name="Villager_01" parent="NPCs" instance=ExtResource("16_npc_base_scene")]
+position = Vector2(450, 210)
+npc_name = "Villager"
+current_state = 1
+waypoints = [Vector2(450, 210), Vector2(490, 210), Vector2(490, 250), Vector2(450, 250)]
+waypoint_wait_time = 1.5
+rng_seed = 1002
+
+[node name="Villager_02" parent="NPCs" instance=ExtResource("16_npc_base_scene")]
+position = Vector2(510, 270)
+npc_name = "Villager"
+current_state = 1
+waypoints = [Vector2(510, 270), Vector2(510, 340), Vector2(510, 300)]
+waypoint_wait_time = 2.0
+rng_seed = 1003
+
+[node name="Villager_03" parent="NPCs" instance=ExtResource("16_npc_base_scene")]
+position = Vector2(200, 170)
+npc_name = "Villager"
+prompt_message = "Talk to Neighbor"
+facing_direction = Vector2(1, 0)
+rng_seed = 1004
+
+[node name="Villager_04" parent="NPCs" instance=ExtResource("16_npc_base_scene")]
+position = Vector2(570, 200)
+npc_name = "Villager"
+current_state = 1
+waypoints = [Vector2(570, 200), Vector2(650, 200)]
+waypoint_wait_time = 1.8
+rng_seed = 1005
+
+[node name="Fisher_01" parent="NPCs" instance=ExtResource("16_npc_base_scene")]
+position = Vector2(350, 360)
+npc_name = "Fisherman"
+prompt_message = "Talk to Fisherman"
+facing_direction = Vector2(0, 1)
+rng_seed = 1006
+
+[node name="Fisher_02" parent="NPCs" instance=ExtResource("16_npc_base_scene")]
+position = Vector2(270, 250)
+npc_name = "Fisherman"
+prompt_message = "Talk to Fisherman"
+current_state = 1
+waypoints = [Vector2(270, 250), Vector2(330, 250), Vector2(330, 270), Vector2(270, 270)]
+waypoint_wait_time = 2.0
+rng_seed = 1007
+
+[node name="Shopkeeper_01" parent="NPCs" instance=ExtResource("16_npc_base_scene")]
+position = Vector2(530, 190)
+npc_name = "Shopkeeper"
+prompt_message = "Talk to Merchant"
+facing_direction = Vector2(-1, 0)
+rng_seed = 1008
+
+[node name="Shopkeeper_02" parent="NPCs" instance=ExtResource("16_npc_base_scene")]
+position = Vector2(680, 270)
+npc_name = "Storage Keeper"
+prompt_message = "Talk to Storage Keeper"
+facing_direction = Vector2(0, 1)
+rng_seed = 1009
+
+[node name="Villager_05" parent="NPCs" instance=ExtResource("16_npc_base_scene")]
+position = Vector2(110, 180)
+npc_name = "Villager"
+current_state = 1
+waypoints = [Vector2(110, 180), Vector2(110, 230)]
+waypoint_wait_time = 2.5
+rng_seed = 1010
+
+[node name="Villager_06" parent="NPCs" instance=ExtResource("16_npc_base_scene")]
+position = Vector2(620, 360)
+npc_name = "Villager"
+facing_direction = Vector2(0, 1)
+rng_seed = 1011
+
+[node name="Villager_07" parent="NPCs" instance=ExtResource("16_npc_base_scene")]
+position = Vector2(200, 270)
+npc_name = "Villager"
+facing_direction = Vector2(0, 1)
+rng_seed = 1012
+
+[node name="Villager_08" parent="NPCs" instance=ExtResource("16_npc_base_scene")]
+position = Vector2(550, 90)
+npc_name = "Villager"
+current_state = 1
+waypoints = [Vector2(550, 90), Vector2(610, 90), Vector2(610, 110), Vector2(550, 110)]
+waypoint_wait_time = 2.2
+rng_seed = 1013
+
+[node name="Villager_09" parent="NPCs" instance=ExtResource("16_npc_base_scene")]
+position = Vector2(410, 210)
+npc_name = "Villager"
+facing_direction = Vector2(1, 0)
+rng_seed = 1014
+
+[node name="Villager_10" parent="NPCs" instance=ExtResource("16_npc_base_scene")]
+position = Vector2(610, 260)
+npc_name = "Courier"
+prompt_message = "Talk to Courier"
+current_state = 1
+waypoints = [Vector2(610, 260), Vector2(610, 310)]
+waypoint_wait_time = 1.5
+rng_seed = 1015
+
+[node name="Villager_11" parent="NPCs" instance=ExtResource("16_npc_base_scene")]
+position = Vector2(836, 170)
+npc_name = "Lookout"
+prompt_message = "Talk to Lookout"
+facing_direction = Vector2(0, -1)
+rng_seed = 1016
+
+[node name="Villager_12" parent="NPCs" instance=ExtResource("16_npc_base_scene")]
+position = Vector2(740, 150)
+npc_name = "Villager"
+current_state = 1
+waypoints = [Vector2(740, 150), Vector2(800, 150)]
+waypoint_wait_time = 2.0
+rng_seed = 1017
+
+[node name="Villager_13" parent="NPCs" instance=ExtResource("16_npc_base_scene")]
+position = Vector2(320, 200)
+npc_name = "Villager"
+current_state = 1
+waypoints = [Vector2(320, 200), Vector2(380, 200)]
+waypoint_wait_time = 1.6
+rng_seed = 1018
+
+[node name="Fisher_03" parent="NPCs" instance=ExtResource("16_npc_base_scene")]
+position = Vector2(400, 330)
+npc_name = "Dockhand"
+prompt_message = "Talk to Dockhand"
+current_state = 1
+waypoints = [Vector2(400, 330), Vector2(440, 330)]
+waypoint_wait_time = 2.4
+rng_seed = 1019
 
 

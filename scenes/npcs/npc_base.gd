@@ -63,13 +63,13 @@ signal interacted(player: Player)
 @export var texture_right: Texture2D = null
 
 ## Tracks the last non-zero facing direction (defaults to Vector2.DOWN).
-var facing_direction: Vector2 = Vector2.DOWN
+@export var facing_direction: Vector2 = Vector2.DOWN
 
 ## Current active animation state string.
 var current_animation_state: String = "idle_down"
 
 ## Index of the current target waypoint.
-var current_waypoint_index: int = 0
+@export var current_waypoint_index: int = 0
 
 ## Direction used when directly commanded to walk without waypoints.
 var manual_move_dir: Vector2 = Vector2.ZERO
@@ -80,12 +80,26 @@ var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 ## Internal timer tracking idle/pause delays.
 var _wait_timer: float = 0.0
 
+## Tracks time spent obstructed with negligible movement progress.
+var _stuck_timer: float = 0.0
+
+## Count of consecutive recovery cycles on the active waypoint.
+var _consecutive_stuck_count: int = 0
+
+## Whether the NPC is temporarily yielding to let another entity pass.
+var _is_yielding: bool = false
+
+## When true, attempts the secondary axis before dominant axis during obstacle recovery.
+var _prefer_secondary_axis: bool = false
+
 @onready var sprite: Sprite2D = $Sprite2D
 @onready var collision_shape: CollisionShape2D = $CollisionShape2D
 @onready var interaction_area: NPCInteractionArea = get_node_or_null("InteractionArea")
 @onready var animation_player: AnimationPlayer = get_node_or_null("AnimationPlayer")
 
 func _ready() -> void:
+	motion_mode = CharacterBody2D.MOTION_MODE_FLOATING
+	
 	if not sprite:
 		sprite = get_node_or_null("Sprite2D")
 	if not collision_shape:
@@ -106,6 +120,9 @@ func _ready() -> void:
 	if interaction_area:
 		interaction_area.prompt_message = prompt_message
 		interaction_area.is_interactable = is_interactable
+	
+	if not waypoints.is_empty() and current_state == State.IDLE and _wait_timer <= 0.0:
+		_wait_timer = get_random_idle_duration(0.2, maxf(waypoint_wait_time, 1.0))
 	
 	_update_animation_state(Vector2.ZERO)
 
@@ -157,22 +174,22 @@ func _resolve_directional_texture(state_name: String) -> Texture2D:
 func _physics_process(delta: float) -> void:
 	if is_movement_locked or current_state == State.PAUSED:
 		velocity = Vector2.ZERO
-		if is_inside_tree():
-			move_and_slide()
 		_update_animation_state(Vector2.ZERO)
 		return
 	
 	if current_state == State.IDLE:
 		velocity = Vector2.ZERO
-		if is_inside_tree():
-			move_and_slide()
 		_update_animation_state(Vector2.ZERO)
 		
-		# If waiting at a waypoint, countdown and advance
-		if not waypoints.is_empty() and _wait_timer > 0.0:
+		# If waiting at a waypoint or yielding to an obstruction, countdown and resume
+		if _wait_timer > 0.0:
 			_wait_timer -= delta
 			if _wait_timer <= 0.0:
-				_advance_waypoint()
+				if _is_yielding:
+					_is_yielding = false
+					set_state(State.WALKING)
+				elif not waypoints.is_empty():
+					_advance_waypoint()
 		return
 	
 	if current_state == State.WALKING:
@@ -191,8 +208,8 @@ func _physics_process(delta: float) -> void:
 		else:
 			_process_waypoint_movement(delta)
 
-## Executes strict cardinal movement towards the current waypoint.
-func _process_waypoint_movement(_delta: float) -> void:
+## Executes strict cardinal movement towards the current waypoint with obstruction recovery.
+func _process_waypoint_movement(delta: float) -> void:
 	if current_waypoint_index < 0 or current_waypoint_index >= waypoints.size():
 		velocity = Vector2.ZERO
 		set_state(State.IDLE)
@@ -205,12 +222,16 @@ func _process_waypoint_movement(_delta: float) -> void:
 		_handle_waypoint_arrival(target)
 		return
 	
+	var diff_x_active: bool = absf(diff.x) > arrival_threshold
+	var diff_y_active: bool = absf(diff.y) > arrival_threshold
 	var move_dir := Vector2.ZERO
 	
-	# Sequential cardinal movement: resolve dominant axis first
-	if abs(diff.x) > arrival_threshold:
+	# Sequential cardinal movement: evaluate dominant vs secondary axis
+	if _prefer_secondary_axis and diff_y_active:
+		move_dir = Vector2(0.0, signf(diff.y))
+	elif diff_x_active:
 		move_dir = Vector2(signf(diff.x), 0.0)
-	elif abs(diff.y) > arrival_threshold:
+	elif diff_y_active:
 		move_dir = Vector2(0.0, signf(diff.y))
 	else:
 		_handle_waypoint_arrival(target)
@@ -224,12 +245,57 @@ func _process_waypoint_movement(_delta: float) -> void:
 		velocity.y = 0.0
 	
 	_update_animation_state(velocity)
+	
+	var pos_before: Vector2 = global_position
 	if is_inside_tree():
 		move_and_slide()
+	var actual_dist: float = global_position.distance_to(pos_before)
+	
+	# Obstruction detection: if actual movement was negligible while colliding with an obstacle
+	var is_blocked: bool = (actual_dist < (speed * delta * 0.25)) and (get_slide_collision_count() > 0)
+	if is_blocked:
+		_stuck_timer += delta
+		if _stuck_timer >= 0.5:
+			_handle_stuck_recovery(diff_x_active, diff_y_active)
+	else:
+		_stuck_timer = maxf(0.0, _stuck_timer - delta * 2.0)
+
+## Recovers from a blocked route by yielding, testing alternate axis, or advancing waypoint.
+func _handle_stuck_recovery(has_x_remaining: bool, has_y_remaining: bool) -> void:
+	_stuck_timer = 0.0
+	_consecutive_stuck_count += 1
+	velocity = Vector2.ZERO
+	_update_animation_state(Vector2.ZERO)
+	
+	# Strategy 1: Try the alternate cardinal axis if available
+	if not _prefer_secondary_axis and has_x_remaining and has_y_remaining:
+		_prefer_secondary_axis = true
+		_is_yielding = true
+		_wait_timer = get_random_pause_duration(0.3, 0.6)
+		set_state(State.IDLE)
+		return
+	
+	# Strategy 2: Yield briefly to let the colliding entity (Sens or NPC) pass
+	if _consecutive_stuck_count < 3:
+		_prefer_secondary_axis = false
+		_is_yielding = true
+		_wait_timer = get_random_pause_duration(0.6, 1.2)
+		set_state(State.IDLE)
+		return
+	
+	# Strategy 3: Sustained obstruction after repeated attempts — advance waypoint to break deadlock
+	_prefer_secondary_axis = false
+	_consecutive_stuck_count = 0
+	_is_yielding = false
+	_advance_waypoint()
 
 func _handle_waypoint_arrival(target: Vector2) -> void:
 	global_position = target
 	velocity = Vector2.ZERO
+	_stuck_timer = 0.0
+	_consecutive_stuck_count = 0
+	_is_yielding = false
+	_prefer_secondary_axis = false
 	_update_animation_state(Vector2.ZERO)
 	var idx := current_waypoint_index
 	waypoint_reached.emit(idx, target)
@@ -239,6 +305,10 @@ func _handle_waypoint_arrival(target: Vector2) -> void:
 func _advance_waypoint() -> void:
 	if waypoints.is_empty():
 		return
+	_stuck_timer = 0.0
+	_consecutive_stuck_count = 0
+	_is_yielding = false
+	_prefer_secondary_axis = false
 	
 	var next_idx := current_waypoint_index + 1
 	if next_idx >= waypoints.size():
@@ -352,6 +422,12 @@ func interact(player: Player) -> void:
 		return
 	if player:
 		face_towards(player.global_position)
+	# If currently walking, pause briefly so NPC remains stationary while interacting
+	if current_state == State.WALKING:
+		_is_yielding = true
+		_wait_timer = maxf(_wait_timer, 2.0)
+		velocity = Vector2.ZERO
+		set_state(State.IDLE)
 	interacted.emit(player)
 
 # --- Animation & Facing Helpers ---
